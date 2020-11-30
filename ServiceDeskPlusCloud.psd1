@@ -1,6 +1,6 @@
 @{
     # Script module or binary module file associated with this manifest.
-    RootModule = 'ModuleName.psm1'
+    RootModule = 'ServiceDeskPlusCloud.psm1'
 
     # Version number of this module.
     ModuleVersion = '0.0.0'
@@ -9,7 +9,7 @@
     # CompatiblePSEditions = @()
 
     # ID used to uniquely identify this module
-    GUID = ''
+    GUID = '956728b6-36d8-4f75-ba4f-c752aed75889'
 
     # Author of this module
     Author = 'Devyn Spencer'
@@ -21,7 +21,7 @@
     Copyright = '(c) 2020 Devyn Spencer. All rights reserved.'
 
     # Description of the functionality provided by this module
-    Description = 'PowerShell module focused on x, y, and z.'
+    Description = 'PowerShell module focused on manipulating the ServiceDeskPlus OnDemand (cloud) API.'
 
     # Minimum version of the Windows PowerShell engine required by this module
     PowerShellVersion = '5.1'
@@ -86,24 +86,29 @@
         PSData = @{
 
             # Tags applied to this module. These help with module discovery in online galleries.
-            Tags = @()
+            Tags = @(
+                "sdp"
+                "service desk plus"
+                "manage engine"
+                "zoho"
+            )
 
             # A URL to the license for this module.
-            LicenseUri = 'https://raw.githubusercontent.com/devynspencer/powershell-template/master/LICENSE'
+            LicenseUri = 'https://raw.githubusercontent.com/devynspencer/powershell-sdp-cloud/master/LICENSE'
 
             # A URL to the main website for this project.
-            ProjectUri = 'https://github.com/devynspencer/powershell-template'
+            ProjectUri = 'https://github.com/devynspencer/powershell-sdp-cloud'
 
             # A URL to an icon representing this module.
             # IconUri = ''
 
             # ReleaseNotes of this module
-            ReleaseNotes = 'https://raw.githubusercontent.com/devynspencer/powershell-template/main/README.md'
+            ReleaseNotes = 'https://raw.githubusercontent.com/devynspencer/powershell-sdp-cloud/main/README.md'
         }
     }
 
     # HelpInfo URI of this module
-    HelpInfoURI = 'https://raw.githubusercontent.com/devynspencer/powershell-template/main/README.md'
+    HelpInfoURI = 'https://raw.githubusercontent.com/devynspencer/powershell-sdp-cloud/main/README.md'
 
     # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
     # DefaultCommandPrefix = ''
