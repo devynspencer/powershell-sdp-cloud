@@ -11,6 +11,7 @@ function Update-ZohoAccessToken {
 
         $RedirectUri,
 
+        [Parameter(Mandatory)]
         $Scope
     )
 
