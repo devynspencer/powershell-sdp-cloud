@@ -15,8 +15,6 @@ function Update-ZohoAccessToken {
         $Scope
     )
 
-    $Uri = "https://accounts.zoho.com/oauth/v2/token"
-
     $Body = @{
         refresh_token = $RefreshToken
         grant_type = "refresh_token"
@@ -30,7 +28,7 @@ function Update-ZohoAccessToken {
     }
 
     $RestMethodParameters = @{
-        Uri = $Uri
+        Uri = "https://accounts.zoho.com/oauth/v2/token"
         Method = "Post"
         Body = $Body
     }
