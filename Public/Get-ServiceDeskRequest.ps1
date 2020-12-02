@@ -10,14 +10,18 @@ function Get-ServiceDeskRequest {
         $Portal
     )
 
-    $Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests/$Id"
-
     $Headers = @{
         Authorization = "Zoho-oauthtoken $AccessToken"
         Accept = "application/v3+json"
     }
 
-    $Response = (Invoke-RestMethod -Method Get -Uri $Uri -Headers $Headers).request
+    $RestMethodParameters = @{
+        Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests/$Id"
+        Headers = $Headers
+        Method = "Get"
+    }
+
+    $Response = (Invoke-RestMethod @RestMethodParameters).request
 
     [pscustomobject] $Request = [ordered] @{
         ApprovalStatus = $Response.approval_status
