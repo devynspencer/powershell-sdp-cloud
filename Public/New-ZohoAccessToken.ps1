@@ -18,5 +18,10 @@ function New-ZohoAccessToken {
         $Uri = "$Uri&redirect_uri=$RedirectUri"
     }
 
-    Invoke-RestMethod -Method Post -Uri $Uri
+    $RestMethodParameters = @{
+        Uri = $Uri
+        Method = "Post"
+    }
+
+    Invoke-RestMethod @RestMethodParameters
 }
