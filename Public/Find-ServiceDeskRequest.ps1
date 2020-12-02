@@ -8,6 +8,9 @@ function Find-ServiceDeskRequest {
 
         [Parameter(Mandatory)]
         [string[]] $Status,
+
+        [ValidateNotNull()]
+        $Technician
     )
 
     $Headers = @{
@@ -28,6 +31,15 @@ function Find-ServiceDeskRequest {
                     values = $Status
                 }
             )
+        }
+    }
+
+    if ($Technician) {
+        $Data.list_info.search_criteria += @{
+            field = "technician.email_id"
+            condition = "is"
+            logical_operator = "and"
+            values = ,$Technician
         }
     }
 
