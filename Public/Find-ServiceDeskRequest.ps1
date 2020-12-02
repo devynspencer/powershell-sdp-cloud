@@ -25,7 +25,14 @@ function Find-ServiceDeskRequest {
         format = "json"
     }
 
-    $Response = Invoke-RestMethod -Uri "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests" -Method Get -Headers $Headers -Body $Body
+    $RestMethodParameters = @{
+        Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests"
+        Headers = $Headers
+        Method = "Get"
+        Body = $Body
+    }
+
+    $Response = Invoke-RestMethod @RestMethodParameters
 
     foreach ($Request in $Response.requests) {
         [pscustomobject] [ordered] @{
