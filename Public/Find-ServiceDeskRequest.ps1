@@ -4,7 +4,10 @@ function Find-ServiceDeskRequest {
         $AccessToken,
 
         [Parameter(Mandatory)]
-        $Portal
+        $Portal,
+
+        [Parameter(Mandatory)]
+        [string[]] $Status,
     )
 
     $Headers = @{
@@ -17,6 +20,14 @@ function Find-ServiceDeskRequest {
             row_count = 100
             start_index = 1
             get_total_count = $true
+
+            search_criteria = @(
+                @{
+                    field = "status.name"
+                    condition = "is"
+                    values = $Status
+                }
+            )
         }
     }
 
