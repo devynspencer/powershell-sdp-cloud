@@ -21,7 +21,7 @@ function Find-ServiceDeskRequest {
     }
 
     $Body = @{
-        input_data = ($Data | ConvertTo-Json -Depth 3)
+        input_data = ($Data | ConvertTo-Json -Depth 4)
         format = "json"
     }
 
