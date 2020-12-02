@@ -12,8 +12,6 @@ function New-ZohoAccessToken {
         $RedirectUri
     )
 
-    $Uri = "https://accounts.zoho.com/oauth/v2/token"
-
     $Body = @{
         code = $GrantToken
         grant_type = "authorization_code"
@@ -26,7 +24,7 @@ function New-ZohoAccessToken {
     }
 
     $RestMethodParameters = @{
-        Uri = $Uri
+        Uri = "https://accounts.zoho.com/oauth/v2/token"
         Method = "Post"
         Body = $Body
     }
