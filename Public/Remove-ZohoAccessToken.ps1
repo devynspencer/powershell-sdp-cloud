@@ -4,7 +4,10 @@ function Remove-ZohoRefreshToken {
         $RefreshToken
     )
 
-    $Uri = "https://accounts.zoho.com/oauth/v2/token/revoke?token=$RefreshToken"
+    $RestMethodParameters = @{
+        Uri = "https://accounts.zoho.com/oauth/v2/token/revoke?token=$RefreshToken"
+        Method = "Post"
+    }
 
-    Invoke-RestMethod -Method Post -Uri $Uri
+    Invoke-RestMethod @RestMethodParameters
 }
