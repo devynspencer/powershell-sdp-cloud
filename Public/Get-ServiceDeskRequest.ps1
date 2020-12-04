@@ -23,7 +23,7 @@ function Get-ServiceDeskRequest {
 
     $Response = (Invoke-RestMethod @RestMethodParameters).request
 
-    [pscustomobject] $Request = [ordered] @{
+    $Request = [ordered] @{
         ApprovalStatus = $Response.approval_status
         Assets = $Response.assets
         AssignedTime = $Response.assigned_time.display_value
@@ -88,5 +88,5 @@ function Get-ServiceDeskRequest {
         UnrepliedCount = $Response.unreplied_count
     }
 
-    $Request
+    [pscustomobject] $Request
 }
