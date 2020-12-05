@@ -38,7 +38,9 @@ function Set-ServiceDeskRequest {
 
         $Priority,
 
-        $Impact
+        $Impact,
+
+        $Resolution
     )
 
     $Headers = @{
@@ -107,6 +109,11 @@ function Set-ServiceDeskRequest {
     if ($Impact) {
         $Data.request.impact = @{}
         $Data.request.impact.name = $Impact
+    }
+
+    if ($Resolution) {
+        $Data.request.resolution = @{}
+        $Data.request.resolution.content = $Resolution
     }
 
     $Body = @{
