@@ -8,6 +8,7 @@ function Add-ServiceDeskNote {
 
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNull()]
+        [Int64]
         $Id,
 
         [Parameter(Mandatory)]
