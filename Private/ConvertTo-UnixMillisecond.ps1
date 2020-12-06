@@ -1,6 +1,6 @@
 function ConvertTo-UnixMillisecond {
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         $Date
     )
 
