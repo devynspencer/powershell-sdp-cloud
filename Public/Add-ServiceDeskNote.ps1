@@ -6,7 +6,7 @@ function Add-ServiceDeskNote {
         [Parameter(Mandatory)]
         $Portal,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [ValidateNotNull()]
         $Id,
 
