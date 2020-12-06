@@ -1,5 +1,6 @@
 function ConvertTo-UnixMillisecond {
     param (
+        [Parameter(Mandatory)]
         $Date
     )
 
