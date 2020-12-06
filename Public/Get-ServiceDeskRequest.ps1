@@ -4,6 +4,7 @@ function Get-ServiceDeskRequest {
         $AccessToken,
 
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Int64]
         $Id,
 
         [Parameter(Mandatory)]
