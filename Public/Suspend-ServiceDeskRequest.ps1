@@ -9,6 +9,7 @@ function Suspend-ServiceDeskRequest {
         $Portal,
 
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Int64]
         $Id,
 
         $Until,
