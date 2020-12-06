@@ -6,7 +6,7 @@ function Remove-ServiceDeskRequest {
         [Parameter(Mandatory)]
         $Portal,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         $Id
     )
 
