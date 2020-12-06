@@ -6,8 +6,8 @@ function Find-ServiceDeskRequest {
         [Parameter(Mandatory)]
         $Portal,
 
-        [Parameter(Mandatory)]
-        [string[]] $Status,
+        [ValidateNotNull()]
+        [string[]] $Status = "Open",
 
         [ValidateNotNull()]
         $Technician
