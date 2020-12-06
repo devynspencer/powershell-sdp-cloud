@@ -50,8 +50,6 @@ function Suspend-ServiceDeskRequest {
         input_data = ($Data | ConvertTo-Json -Depth 5 -Compress)
     }
 
-    Write-Host -ForegroundColor Cyan $Body.input_data
-
     $RestMethodParameters = @{
         Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests/$Id"
         Headers = $Headers
