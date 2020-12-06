@@ -8,7 +8,7 @@ function Resolve-ServiceDeskRequest {
         [Parameter(Mandatory)]
         $Portal,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         $Id,
 
         [ValidateNotNull()]
