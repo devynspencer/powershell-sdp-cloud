@@ -9,6 +9,7 @@ function Resolve-ServiceDeskRequest {
         $Portal,
 
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Int64]
         $Id,
 
         [ValidateNotNull()]
