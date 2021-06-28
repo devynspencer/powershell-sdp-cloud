@@ -45,7 +45,6 @@ function Find-ServiceDeskRequest {
 
     $Body = @{
         input_data = ($Data | ConvertTo-Json -Depth 4 -Compress)
-        format = "json"
     }
 
     $RestMethodParameters = @{
