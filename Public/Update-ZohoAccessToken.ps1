@@ -9,8 +9,6 @@ function Update-ZohoAccessToken {
         [Parameter(Mandatory)]
         $ClientSecret,
 
-        $RedirectUri,
-
         [Parameter(Mandatory)]
         $Scope
     )
@@ -21,10 +19,6 @@ function Update-ZohoAccessToken {
         client_id = $ClientId
         client_secret = $ClientSecret
         scope = $Scope
-    }
-
-    if ($RedirectUri) {
-        $Body.redirect_uri = $RedirectUri
     }
 
     $RestMethodParameters = @{
