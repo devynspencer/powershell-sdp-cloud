@@ -15,7 +15,18 @@ function Resolve-ServiceDeskRequest {
         $Message = "Work complete, resolving ticket. Respond to reopen ticket."
     )
 
-    $PSBoundParameters.Remove("Message") | Out-Null
+    begin {
+        $SetParams = @{
+            AccessToken = $AccessToken
+            Portal = $Portal
+            Resolution = $Message
+            Status = "Resolved"
+        }
+    }
 
-    Set-ServiceDeskRequest @PSBoundParameters -Resolution $Message -Status Resolved
+    process {
+        foreach ($RequestId in $Id) {
+            Set-ServiceDeskRequest @SetParams -Id $RequestId
+        }
+    }
 }
