@@ -13,8 +13,8 @@ function Get-ServiceDeskRequest {
 
     begin {
         $Headers = @{
-            Authorization = "Zoho-oauthtoken $AccessToken"
-            Accept = "application/v3+json"
+            Authorization = "Zoho-Oauthtoken $AccessToken"
+            Accept = "application/vnd.manageengine.sdp.v3+json"
         }
     }
 
