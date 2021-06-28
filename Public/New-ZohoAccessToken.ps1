@@ -7,9 +7,7 @@ function New-ZohoAccessToken {
         $ClientId,
 
         [Parameter(Mandatory)]
-        $ClientSecret,
-
-        $RedirectUri
+        $ClientSecret
     )
 
     $Body = @{
@@ -17,10 +15,6 @@ function New-ZohoAccessToken {
         grant_type = "authorization_code"
         client_id = $ClientId
         client_secret = $ClientSecret
-    }
-
-    if ($RedirectUri) {
-        $Body.redirect_uri = $RedirectUri
     }
 
     $RestMethodParameters = @{
