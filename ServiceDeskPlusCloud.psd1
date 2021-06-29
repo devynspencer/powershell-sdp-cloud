@@ -68,6 +68,7 @@
         "Find-ServiceDeskRequest"
         "Set-ServiceDeskRequest"
         "Close-ServiceDeskRequest"
+        "Resolve-ServiceDeskUri"
         "Remove-ServiceDeskRequest"
         "New-ServiceDeskRequest"
         "Add-ServiceDeskNote"
