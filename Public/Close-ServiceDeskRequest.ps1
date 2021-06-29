@@ -1,6 +1,6 @@
 . "$PSScriptRoot\Set-ServiceDeskRequest"
 
-function Resolve-ServiceDeskRequest {
+function Close-ServiceDeskRequest {
     param (
         [Parameter(Mandatory)]
         $AccessToken,
