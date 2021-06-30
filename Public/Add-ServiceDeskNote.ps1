@@ -3,23 +3,22 @@ function Add-ServiceDeskNote {
         [Parameter(Mandatory)]
         $AccessToken,
 
-        [Parameter(Mandatory)]
-        $Portal,
-
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [ValidateNotNull()]
         [Int64]
         $Id,
 
         [Parameter(Mandatory)]
-        [ValidateNotNull()]
+        $Portal,
+
+        [Parameter(Mandatory)]
+        [ValidateNotNullOrEmpty()]
         $Message,
 
         [switch]
-        $NotifyTechnician,
+        $Notify,
 
-        [switch]
-        $Public
+        [bool]
+        $Public = $true
     )
 
     begin {
@@ -37,7 +36,7 @@ function Add-ServiceDeskNote {
         }
 
         # Coddle switch parameters until they function as designed
-        if ($NotifyTechnician) {
+        if ($Notify) {
             $Data.request_note.notify_technician = $true
         }
 
