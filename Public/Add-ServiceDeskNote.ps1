@@ -58,7 +58,20 @@ function Add-ServiceDeskNote {
                 Body = $Body
             }
 
-            Invoke-RestMethod @RestMethodParameters
+            $Response = (Invoke-RestMethod @RestMethodParameters).request_note
+
+            $Note = [ordered] @{
+                Id = $Response.id
+                Creator = $Response.created_by.email_id
+                CreatedTime = $Response.created_time.display_value
+                RequestId = $Response.request.id
+                RequestSubject = $Response.request.subject
+                RequestDisplayId = $Response.request.display_id
+                Message = $Response.description
+                Public = $Response.show_to_requester
+            }
+
+            [pscustomobject] $Note
         }
     }
 }
