@@ -1,16 +1,16 @@
 function New-ZohoAccessToken {
-    [CmdletBinding(DefaultParameterSetName="FromFile")]
+    [CmdletBinding(DefaultParameterSetName = "FromFile")]
     param (
-        [Parameter(Mandatory, ParameterSetName="FromParams")]
+        [Parameter(Mandatory, ParameterSetName = "FromParams")]
         $GrantToken,
 
-        [Parameter(Mandatory, ParameterSetName="FromParams")]
+        [Parameter(Mandatory, ParameterSetName = "FromParams")]
         $ClientId,
 
-        [Parameter(Mandatory, ParameterSetName="FromParams")]
+        [Parameter(Mandatory, ParameterSetName = "FromParams")]
         $ClientSecret,
 
-        [Parameter(Mandatory, ParameterSetName="FromFile")]
+        [Parameter(Mandatory, ParameterSetName = "FromFile")]
         $FilePath
     )
 
