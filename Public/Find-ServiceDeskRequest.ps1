@@ -39,7 +39,7 @@ function Find-ServiceDeskRequest {
             field = "technician.email_id"
             condition = "is"
             logical_operator = "and"
-            values = ,$Technician
+            values = , $Technician
         }
     }
 

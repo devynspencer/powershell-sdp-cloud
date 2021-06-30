@@ -1,19 +1,19 @@
 function Update-ZohoAccessToken {
-    [CmdletBinding(DefaultParameterSetName="FromFile")]
+    [CmdletBinding(DefaultParameterSetName = "FromFile")]
     param (
         [Parameter(Mandatory)]
         $RefreshToken,
 
-        [Parameter(Mandatory, ParameterSetName="FromParams")]
+        [Parameter(Mandatory, ParameterSetName = "FromParams")]
         $ClientId,
 
-        [Parameter(Mandatory, ParameterSetName="FromParams")]
+        [Parameter(Mandatory, ParameterSetName = "FromParams")]
         $ClientSecret,
 
-        [Parameter(Mandatory, ParameterSetName="FromParams")]
+        [Parameter(Mandatory, ParameterSetName = "FromParams")]
         $Scope,
 
-        [Parameter(Mandatory, ParameterSetName="FromFile")]
+        [Parameter(Mandatory, ParameterSetName = "FromFile")]
         $FilePath
     )
 

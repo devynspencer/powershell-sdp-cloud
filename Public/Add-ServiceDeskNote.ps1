@@ -27,7 +27,7 @@ function Add-ServiceDeskNote {
             Authorization = "Zoho-oauthtoken $AccessToken"
             Accept = "application/vnd.manageengine.sdp.v3+json"
         }
-    
+
         $Data = @{
             request_note = @{
                 description = $Message
@@ -35,16 +35,16 @@ function Add-ServiceDeskNote {
                 show_to_requester = $false
             }
         }
-    
+
         # Coddle switch parameters until they function as designed
         if ($NotifyTechnician) {
             $Data.request_note.notify_technician = $true
         }
-    
+
         if ($Public) {
             $Data.request_note.show_to_requester = $true
         }
-    
+
         $Body = @{
             input_data = ($Data | ConvertTo-Json -Depth 4 -Compress)
         }
@@ -58,7 +58,7 @@ function Add-ServiceDeskNote {
                 Method = "Post"
                 Body = $Body
             }
-        
+
             Invoke-RestMethod @RestMethodParameters
         }
     }

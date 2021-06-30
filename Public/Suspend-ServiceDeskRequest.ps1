@@ -31,26 +31,26 @@ function Suspend-ServiceDeskRequest {
                 }
             }
         }
-    
+
         if ($Until) {
             $Data.request.onhold_scheduler = @{
                 change_to_status = @{
                     name = "Open"
                 }
-    
+
                 scheduled_time = @{
                     value = ConvertTo-UnixMillisecond $Until
                 }
             }
-    
+
             if ($Message) {
                 $Data.request.onhold_scheduler.comments = $Message
             }
         }
-    
+
         $Body = @{
             input_data = ($Data | ConvertTo-Json -Depth 5 -Compress)
-        }    
+        }
     }
 
     process {
@@ -61,8 +61,8 @@ function Suspend-ServiceDeskRequest {
                 Method = "Put"
                 Body = $Body
             }
-        
+
             $Response = (Invoke-RestMethod @RestMethodParameters).request
-        }    
+        }
     }
 }

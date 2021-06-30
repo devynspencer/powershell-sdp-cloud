@@ -32,9 +32,9 @@ function Resolve-ServiceDeskUri {
             }
 
             if ($Uri -match $Matchers.Problem) {
-              $ResourceType = "problem"
-              $Matched = $true
-          }
+                $ResourceType = "problem"
+                $Matched = $true
+            }
 
             if ($Matched) {
                 $Id = $Matches.Id
