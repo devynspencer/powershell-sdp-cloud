@@ -52,3 +52,17 @@ Add defaults to your PowerShell profile to limit the number of parameters that n
 $PSDefaultParameterValues['*-ServiceDeskPlus*:Portal'] = 'is'
 $PSDefaultParameterValues['Find-ServiceDeskPlusRequest:Technician'] = 'devynspencer@users.noreply.github.com'
 ```
+
+
+## Testing
+First install the [Pester](https://github.com/pester/Pester) module:
+
+```powershell
+Install-Module Pester -Force
+```
+
+You're ready to run Pester tests:
+
+```powershell
+Invoke-Pester
+```
