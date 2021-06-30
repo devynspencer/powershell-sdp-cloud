@@ -23,7 +23,7 @@ function Add-ServiceDeskNote {
 
     begin {
         $Headers = @{
-            Authorization = "Zoho-oauthtoken $AccessToken"
+            Authorization = "Zoho-Oauthtoken $AccessToken"
             Accept = "application/vnd.manageengine.sdp.v3+json"
         }
 
