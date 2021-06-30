@@ -39,3 +39,16 @@ $RequestParams = @{
 
 $Tickets = Find-ServiceDeskRequest @RequestParams
 ```
+
+
+### Default Parameters
+PowerShell allows you to save default values for parameters via the [PSDefaultParameterValues](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parameters_default_values) variable.
+
+Add defaults to your PowerShell profile to limit the number of parameters that need to be specified when executing `ServiceDeskPlusCloud` functions:
+
+```powershell
+# Microsoft.PowerShell_Profile.ps1
+
+$PSDefaultParameterValues['*-ServiceDeskPlus*:Portal'] = 'is'
+$PSDefaultParameterValues['Find-ServiceDeskPlusRequest:Technician'] = 'devynspencer@users.noreply.github.com'
+```
