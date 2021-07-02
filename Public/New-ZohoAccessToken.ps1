@@ -1,26 +1,36 @@
 function New-ZohoAccessToken {
+    [CmdletBinding(DefaultParameterSetName = "FromFile")]
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ParameterSetName = "FromParams")]
         $GrantToken,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ParameterSetName = "FromParams")]
         $ClientId,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ParameterSetName = "FromParams")]
         $ClientSecret,
 
-        $RedirectUri
+        [Parameter(Mandatory, ParameterSetName = "FromFile")]
+        $FilePath
     )
 
-    $Body = @{
-        code = $GrantToken
-        grant_type = "authorization_code"
-        client_id = $ClientId
-        client_secret = $ClientSecret
+    if ($PSBoundParameters.ContainsKey("FilePath")) {
+        $FileContent = Get-Content -Raw -Path $FilePath | ConvertFrom-Json
+        $Body = @{
+            code = $FileContent.code
+            grant_type = $FileContent.grant_type
+            client_id = $FileContent.client_id
+            client_secret = $FileContent.client_secret
+        }
     }
 
-    if ($RedirectUri) {
-        $Body.redirect_uri = $RedirectUri
+    else {
+        $Body = @{
+            code = $GrantToken
+            grant_type = "authorization_code"
+            client_id = $ClientId
+            client_secret = $ClientSecret
+        }
     }
 
     $RestMethodParameters = @{

@@ -1,30 +1,38 @@
 function Update-ZohoAccessToken {
+    [CmdletBinding(DefaultParameterSetName = "FromFile")]
     param (
         [Parameter(Mandatory)]
         $RefreshToken,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ParameterSetName = "FromParams")]
         $ClientId,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ParameterSetName = "FromParams")]
         $ClientSecret,
 
-        $RedirectUri,
+        [Parameter(Mandatory, ParameterSetName = "FromParams")]
+        $Scope,
 
-        [Parameter(Mandatory)]
-        $Scope
+        [Parameter(Mandatory, ParameterSetName = "FromFile")]
+        $FilePath
     )
 
     $Body = @{
         refresh_token = $RefreshToken
         grant_type = "refresh_token"
-        client_id = $ClientId
-        client_secret = $ClientSecret
-        scope = $Scope
     }
 
-    if ($RedirectUri) {
-        $Body.redirect_uri = $RedirectUri
+    if ($PSBoundParameters.ContainsKey("FilePath")) {
+        $FileContent = Get-Content -Raw -Path $FilePath | ConvertFrom-Json
+        $Body.client_id = $FileContent.client_id
+        $Body.client_secret = $FileContent.client_secret
+        $Body.scope = $FileContent.scope -join ','
+    }
+
+    else {
+        $Body.client_id = $ClientId
+        $Body.client_secret = $ClientSecret
+        $Body.scope = $Scope
     }
 
     $RestMethodParameters = @{

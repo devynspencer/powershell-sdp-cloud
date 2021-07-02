@@ -14,7 +14,7 @@ function Find-ServiceDeskRequest {
     )
 
     $Headers = @{
-        Authorization = "Zoho-oauthtoken $AccessToken"
+        Authorization = "Zoho-Oauthtoken $AccessToken"
         Accept = "application/vnd.manageengine.sdp.v3+json"
     }
 
@@ -39,13 +39,12 @@ function Find-ServiceDeskRequest {
             field = "technician.email_id"
             condition = "is"
             logical_operator = "and"
-            values = ,$Technician
+            values = , $Technician
         }
     }
 
     $Body = @{
-        input_data = ($Data | ConvertTo-Json -Depth 4)
-        format = "json"
+        input_data = ($Data | ConvertTo-Json -Depth 4 -Compress)
     }
 
     $RestMethodParameters = @{
