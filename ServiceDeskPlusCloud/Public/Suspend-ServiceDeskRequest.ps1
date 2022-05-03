@@ -20,14 +20,14 @@ function Suspend-ServiceDeskRequest {
     begin {
         $Headers = @{
             Authorization = "Zoho-oauthtoken $AccessToken"
-            Accept = "application/vnd.manageengine.sdp.v3+json"
-            "Content-Type" = "application/x-www-form-urlencoded"
+            Accept = 'application/vnd.manageengine.sdp.v3+json'
+            'Content-Type' = 'application/x-www-form-urlencoded'
         }
 
         $Data = @{
             request = @{
                 status = @{
-                    name = "Onhold"
+                    name = 'Onhold'
                 }
             }
         }
@@ -35,7 +35,7 @@ function Suspend-ServiceDeskRequest {
         if ($Until) {
             $Data.request.onhold_scheduler = @{
                 change_to_status = @{
-                    name = "Open"
+                    name = 'Open'
                 }
 
                 scheduled_time = @{
@@ -58,7 +58,7 @@ function Suspend-ServiceDeskRequest {
             $RestMethodParameters = @{
                 Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests/$RequestId"
                 Headers = $Headers
-                Method = "Put"
+                Method = 'Put'
                 Body = $Body
             }
 

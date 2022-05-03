@@ -17,22 +17,22 @@ function Resolve-ServiceDeskUri {
     process {
         foreach ($ResourceUri in $Uri) {
             if ($Uri -match $Matchers.Request) {
-                $ResourceType = "request"
+                $ResourceType = 'request'
                 $Matched = $true
             }
 
             if ($Uri -match $Matchers.Change) {
-                $ResourceType = "change"
+                $ResourceType = 'change'
                 $Matched = $true
             }
 
             if ($Uri -match $Matchers.Project) {
-                $ResourceType = "project"
+                $ResourceType = 'project'
                 $Matched = $true
             }
 
             if ($Uri -match $Matchers.Problem) {
-                $ResourceType = "problem"
+                $ResourceType = 'problem'
                 $Matched = $true
             }
 

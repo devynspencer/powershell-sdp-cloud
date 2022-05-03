@@ -13,7 +13,7 @@ function Close-ServiceDeskRequest {
         $Id,
 
         [ValidateNotNull()]
-        $Message = "Work complete, resolving ticket. Respond to reopen ticket."
+        $Message = 'Work complete, resolving ticket. Respond to reopen ticket.'
     )
 
     begin {
@@ -21,7 +21,7 @@ function Close-ServiceDeskRequest {
             AccessToken = $AccessToken
             Portal = $Portal
             Resolution = $Message
-            Status = "Resolved"
+            Status = 'Resolved'
         }
     }
 

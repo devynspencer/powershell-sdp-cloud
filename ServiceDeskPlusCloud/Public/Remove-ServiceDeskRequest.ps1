@@ -14,7 +14,7 @@ function Remove-ServiceDeskRequest {
     begin {
         $Headers = @{
             Authorization = "Zoho-oauthtoken $AccessToken"
-            Accept = "application/vnd.manageengine.sdp.v3+json"
+            Accept = 'application/vnd.manageengine.sdp.v3+json'
         }
     }
 
@@ -23,7 +23,7 @@ function Remove-ServiceDeskRequest {
             $RestMethodParameters = @{
                 Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests/$RequestId"
                 Headers = $Headers
-                Method = "Delete"
+                Method = 'Delete'
             }
 
             Invoke-RestMethod @RestMethodParameters

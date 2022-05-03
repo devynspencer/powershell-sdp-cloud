@@ -14,7 +14,7 @@ function Get-ServiceDeskRequest {
     begin {
         $Headers = @{
             Authorization = "Zoho-Oauthtoken $AccessToken"
-            Accept = "application/vnd.manageengine.sdp.v3+json"
+            Accept = 'application/vnd.manageengine.sdp.v3+json'
         }
     }
 
@@ -23,7 +23,7 @@ function Get-ServiceDeskRequest {
             $RestMethodParameters = @{
                 Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests/$RequestId"
                 Headers = $Headers
-                Method = "Get"
+                Method = 'Get'
             }
 
             $Response = (Invoke-RestMethod @RestMethodParameters).request

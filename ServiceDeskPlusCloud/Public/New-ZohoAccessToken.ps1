@@ -1,20 +1,20 @@
 function New-ZohoAccessToken {
-    [CmdletBinding(DefaultParameterSetName = "FromFile")]
+    [CmdletBinding(DefaultParameterSetName = 'FromFile')]
     param (
-        [Parameter(Mandatory, ParameterSetName = "FromParams")]
+        [Parameter(Mandatory, ParameterSetName = 'FromParams')]
         $GrantToken,
 
-        [Parameter(Mandatory, ParameterSetName = "FromParams")]
+        [Parameter(Mandatory, ParameterSetName = 'FromParams')]
         $ClientId,
 
-        [Parameter(Mandatory, ParameterSetName = "FromParams")]
+        [Parameter(Mandatory, ParameterSetName = 'FromParams')]
         $ClientSecret,
 
-        [Parameter(Mandatory, ParameterSetName = "FromFile")]
+        [Parameter(Mandatory, ParameterSetName = 'FromFile')]
         $FilePath
     )
 
-    if ($PSBoundParameters.ContainsKey("FilePath")) {
+    if ($PSBoundParameters.ContainsKey('FilePath')) {
         $FileContent = Get-Content -Raw -Path $FilePath | ConvertFrom-Json
         $Body = @{
             code = $FileContent.code
@@ -27,15 +27,15 @@ function New-ZohoAccessToken {
     else {
         $Body = @{
             code = $GrantToken
-            grant_type = "authorization_code"
+            grant_type = 'authorization_code'
             client_id = $ClientId
             client_secret = $ClientSecret
         }
     }
 
     $RestMethodParameters = @{
-        Uri = "https://accounts.zoho.com/oauth/v2/token"
-        Method = "Post"
+        Uri = 'https://accounts.zoho.com/oauth/v2/token'
+        Method = 'Post'
         Body = $Body
     }
 

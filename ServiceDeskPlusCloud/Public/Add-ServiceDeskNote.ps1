@@ -24,7 +24,7 @@ function Add-ServiceDeskNote {
     begin {
         $Headers = @{
             Authorization = "Zoho-Oauthtoken $AccessToken"
-            Accept = "application/vnd.manageengine.sdp.v3+json"
+            Accept = 'application/vnd.manageengine.sdp.v3+json'
         }
 
         $Data = @{
@@ -54,7 +54,7 @@ function Add-ServiceDeskNote {
             $RestMethodParameters = @{
                 Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests/$RequestId/notes"
                 Headers = $Headers
-                Method = "Post"
+                Method = 'Post'
                 Body = $Body
             }
 

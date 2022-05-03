@@ -7,7 +7,7 @@ function Find-ServiceDeskRequest {
         $Portal,
 
         [ValidateNotNull()]
-        [string[]] $Status = "Open",
+        [string[]] $Status = 'Open',
 
         [ValidateNotNull()]
         $Technician
@@ -15,7 +15,7 @@ function Find-ServiceDeskRequest {
 
     $Headers = @{
         Authorization = "Zoho-Oauthtoken $AccessToken"
-        Accept = "application/vnd.manageengine.sdp.v3+json"
+        Accept = 'application/vnd.manageengine.sdp.v3+json'
     }
 
     $Data = @{
@@ -26,8 +26,8 @@ function Find-ServiceDeskRequest {
 
             search_criteria = @(
                 @{
-                    field = "status.name"
-                    condition = "is"
+                    field = 'status.name'
+                    condition = 'is'
                     values = $Status
                 }
             )
@@ -36,9 +36,9 @@ function Find-ServiceDeskRequest {
 
     if ($Technician) {
         $Data.list_info.search_criteria += @{
-            field = "technician.email_id"
-            condition = "is"
-            logical_operator = "and"
+            field = 'technician.email_id'
+            condition = 'is'
+            logical_operator = 'and'
             values = , $Technician
         }
     }
@@ -50,7 +50,7 @@ function Find-ServiceDeskRequest {
     $RestMethodParameters = @{
         Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests"
         Headers = $Headers
-        Method = "Get"
+        Method = 'Get'
         Body = $Body
     }
 
