@@ -61,24 +61,24 @@
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
     FunctionsToExport = @(
-        "New-ZohoAccessToken"
-        "Update-ZohoAccessToken"
-        "Remove-ZohoRefreshToken"
-        "Get-ServiceDeskRequest"
-        "Find-ServiceDeskRequest"
-        "Set-ServiceDeskRequest"
-        "Close-ServiceDeskRequest"
-        "Resolve-ServiceDeskUri"
-        "Remove-ServiceDeskRequest"
-        "New-ServiceDeskRequest"
-        "Add-ServiceDeskNote"
+        'New-ZohoAccessToken'
+        'Update-ZohoAccessToken'
+        'Remove-ZohoRefreshToken'
+        'Get-ServiceDeskRequest'
+        'Find-ServiceDeskRequest'
+        'Set-ServiceDeskRequest'
+        'Close-ServiceDeskRequest'
+        'Resolve-ServiceDeskUri'
+        'Remove-ServiceDeskRequest'
+        'New-ServiceDeskRequest'
+        'Add-ServiceDeskNote'
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
     CmdletsToExport = @()
 
     # Variables to export from this module
-    VariablesToExport = '*'
+    VariablesToExport = @()
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
     AliasesToExport = @()
@@ -99,10 +99,10 @@
 
             # Tags applied to this module. These help with module discovery in online galleries.
             Tags = @(
-                "sdp"
-                "service desk plus"
-                "manage engine"
-                "zoho"
+                'sdp'
+                'service desk plus'
+                'manage engine'
+                'zoho'
             )
 
             # A URL to the license for this module.
