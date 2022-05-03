@@ -1,4 +1,4 @@
-function New-ZohoAccessToken {
+function Request-ZohoAccessToken {
     [CmdletBinding(DefaultParameterSetName = 'FromFile')]
     param (
         [Parameter(Mandatory, ParameterSetName = 'FromParams')]
