@@ -4,15 +4,29 @@ function New-ZohoAccessToken {
         [Parameter(Mandatory, ParameterSetName = 'FromParams')]
         $GrantToken,
 
-        [Parameter(Mandatory, ParameterSetName = 'FromParams')]
+        [Parameter(ParameterSetName = 'FromParams')]
         $ClientId,
 
-        [Parameter(Mandatory, ParameterSetName = 'FromParams')]
+        [Parameter(ParameterSetName = 'FromParams')]
         $ClientSecret,
 
         [Parameter(Mandatory, ParameterSetName = 'FromFile')]
         $FilePath
     )
+
+    # Retrieve secrets
+    $SecretParams = @{
+        AsPlainText = $true
+        Vault = 'Zoho'
+    }
+
+    if (!$PSBoundParameters.ContainsKey('ClientId')) {
+        $ClientId = Get-Secret @SecretParams -Name 'CLIENT_ID'
+    }
+
+    if (!$PSBoundParameters.ContainsKey('ClientSecret')) {
+        $ClientSecret = Get-Secret @SecretParams -Name 'CLIENT_SECRET'
+    }
 
     if ($PSBoundParameters.ContainsKey('FilePath')) {
         $FileContent = Get-Content -Raw -Path $FilePath | ConvertFrom-Json
