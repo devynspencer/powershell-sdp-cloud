@@ -36,8 +36,14 @@ function Format-ZohoCriteria {
             'is',
             'is not',
             'greater than',
+            'lesser than',
+            'lesser or equal',
+            'greater or equal',
+            'contains',
+            'not contains',
             'starts with',
-            'lesser than'
+            'ends with',
+            'between'
         )]
         $Condition,
 
