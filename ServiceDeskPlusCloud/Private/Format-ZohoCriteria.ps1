@@ -54,6 +54,8 @@ function Format-ZohoCriteria {
     )
 
     # Build criteria object
+    Write-Verbose "Adding criteria for [$Field] using [$Condition] on [$Values]"
+
     $Criteria = @{
         field = $Field
         condition = $Condition
@@ -61,12 +63,16 @@ function Format-ZohoCriteria {
     }
 
     if ($PSBoundParameters.ContainsKey('Operator')) {
+        Write-Verbose "Adding [$Operator] operator"
         $Criteria.logical_operator = $Operator
     }
 
     if ($PSBoundParameters.ContainsKey('Children')) {
+        Write-Verbose "Adding [$($Children.Count)] child criteria"
         $Criteria.children = $Children
     }
+
+    Write-Verbose "Criteria constructed:`n`n$(ConvertTo-Json $Criteria -Depth 6)"
 
     $Criteria
 }
