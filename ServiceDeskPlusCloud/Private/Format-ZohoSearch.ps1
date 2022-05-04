@@ -53,7 +53,6 @@ function Format-ZohoSearch {
         }
 
         $Criteria += Format-ZohoCriteria @Shared @RequesterParams
-        $Criteria += Format-ZohoCriteria @RequesterParams
     }
 
     # Build output object
