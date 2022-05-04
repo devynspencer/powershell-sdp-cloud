@@ -1,3 +1,5 @@
+. "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
+
 function Add-ServiceDeskNote {
     param (
         [Parameter(Mandatory)]
@@ -22,11 +24,6 @@ function Add-ServiceDeskNote {
     )
 
     begin {
-        $Headers = @{
-            Authorization = "Zoho-Oauthtoken $AccessToken"
-            Accept = 'application/vnd.manageengine.sdp.v3+json'
-        }
-
         $Data = @{
             request_note = @{
                 description = $Message
@@ -53,7 +50,7 @@ function Add-ServiceDeskNote {
         foreach ($RequestId in $Id) {
             $RestMethodParameters = @{
                 Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests/$RequestId/notes"
-                Headers = $Headers
+                Headers = Format-ZohoHeader
                 Method = 'Post'
                 Body = $Body
             }

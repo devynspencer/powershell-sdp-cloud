@@ -1,3 +1,5 @@
+. "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
+
 function Get-ServiceDeskRequest {
     param (
         [Parameter(Mandatory)]
@@ -22,7 +24,7 @@ function Get-ServiceDeskRequest {
         foreach ($RequestId in $Id) {
             $RestMethodParameters = @{
                 Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests/$RequestId"
-                Headers = $Headers
+                Headers = Format-ZohoHeader
                 Method = 'Get'
             }
 
