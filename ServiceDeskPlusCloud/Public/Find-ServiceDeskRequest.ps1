@@ -1,3 +1,5 @@
+. "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
+
 function Find-ServiceDeskRequest {
     param (
         [Parameter(Mandatory)]
@@ -12,11 +14,6 @@ function Find-ServiceDeskRequest {
         [ValidateNotNull()]
         $Technician
     )
-
-    $Headers = @{
-        Authorization = "Zoho-Oauthtoken $AccessToken"
-        Accept = 'application/vnd.manageengine.sdp.v3+json'
-    }
 
     $Data = @{
         list_info = @{
@@ -49,7 +46,7 @@ function Find-ServiceDeskRequest {
 
     $RestMethodParameters = @{
         Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests"
-        Headers = $Headers
+        Headers = Format-ZohoHeader
         Method = 'Get'
         Body = $Body
     }
