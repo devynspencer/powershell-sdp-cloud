@@ -46,7 +46,11 @@ function Format-ZohoCriteria {
             'AND',
             'OR'
         )]
-        $Operator
+        $Operator,
+
+        # Child search criteria to attach to this criteria
+        [hashtable[]]
+        $Children
     )
 
     # Build criteria object
@@ -58,6 +62,10 @@ function Format-ZohoCriteria {
 
     if ($PSBoundParameters.ContainsKey('Operator')) {
         $Criteria.logical_operator = $Operator
+    }
+
+    if ($PSBoundParameters.ContainsKey('Children')) {
+        $Criteria.children = $Children
     }
 
     $Criteria
