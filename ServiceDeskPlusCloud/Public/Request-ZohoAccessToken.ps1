@@ -76,6 +76,7 @@ function Request-ZohoAccessToken {
 
     if (!$NoSave) {
         # Store secrets from response
+        $SecretParams.Remove('AsPlainText')
         Set-Secret @SecretParams -Name 'ACCESS_TOKEN' -Secret $Response.access_token
         Set-Secret @SecretParams -Name 'REFRESH_TOKEN' -Secret $Response.refresh_token
     }
