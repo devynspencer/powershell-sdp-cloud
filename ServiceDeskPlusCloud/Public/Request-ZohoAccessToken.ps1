@@ -1,21 +1,27 @@
 function Request-ZohoAccessToken {
     [CmdletBinding(DefaultParameterSetName = 'FromParams')]
     param (
+        # Zoho grant token to exchange for an access token
         [Parameter(Mandatory, ParameterSetName = 'FromParams')]
         $GrantToken,
 
+        # Zoho API client ID string to use for client auth
         [Parameter(ParameterSetName = 'FromParams')]
         $ClientId,
 
+        # Zoho API client secret string to use for client auth
         [Parameter(ParameterSetName = 'FromParams')]
         $ClientSecret,
 
+        # Filesystem path of downloaded JSON file containing access request information
         [Parameter(Mandatory, ParameterSetName = 'FromFile')]
         $FilePath,
 
+        # Do not save auth tokens from response in secret store
         [switch]
         $NoSave,
 
+        # Return response
         [switch]
         $PassThru
     )
