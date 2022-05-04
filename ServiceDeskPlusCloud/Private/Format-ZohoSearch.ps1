@@ -19,22 +19,22 @@ function Format-ZohoSearch {
 
     $Criteria = @()
 
-    if ($PSBoundParameters.ContainsKey('Status')) {
-        $Criteria += Format-ZohoCriteria -Field 'status.name' -Condition 'is' -Values $Status
-    }
-
-    # Handle "user" field inputs, resolve names and email addresses to appropriate field
-    $UserParams = @{
+    $Shared = @{
         Condition = 'is'
     }
 
+    if ($PSBoundParameters.ContainsKey('Status')) {
+        $Criteria += Format-ZohoCriteria @Shared -Field 'status.name' -Values $Status
+    }
+
+    # Handle "user" field inputs, resolve names and email addresses to appropriate field
     if ($PSBoundParameters.ContainsKey('Technician')) {
         $TechParams = @{
             Values = $Technician
             Field = Resolve-UserField $Technician -Field 'technician'
         }
 
-        $Criteria += Format-ZohoCriteria @TechParams
+        $Criteria += Format-ZohoCriteria @Shared @TechParams
     }
 
     if ($PSBoundParameters.ContainsKey('Creator')) {
@@ -43,7 +43,7 @@ function Format-ZohoSearch {
             Field = Resolve-UserField $Creator -Field 'creator'
         }
 
-        $Criteria += Format-ZohoCriteria @CreatorParams
+        $Criteria += Format-ZohoCriteria @Shared @CreatorParams
     }
 
     if ($PSBoundParameters.ContainsKey('Requester')) {
@@ -52,6 +52,7 @@ function Format-ZohoSearch {
             Field = Resolve-UserField $Requester -Field 'requester'
         }
 
+        $Criteria += Format-ZohoCriteria @Shared @RequesterParams
         $Criteria += Format-ZohoCriteria @RequesterParams
     }
 
