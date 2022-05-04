@@ -56,6 +56,7 @@ function Format-ZohoSearch {
         $Criteria += Format-ZohoCriteria @RequesterParams
     }
 
+    # Build output object
     $SearchObj = @{
         search_criteria = $Criteria
     }
