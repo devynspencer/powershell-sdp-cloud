@@ -1,5 +1,5 @@
 function Request-ZohoAccessToken {
-    [CmdletBinding(DefaultParameterSetName = 'FromFile')]
+    [CmdletBinding(DefaultParameterSetName = 'FromParams')]
     param (
         [Parameter(Mandatory, ParameterSetName = 'FromParams')]
         $GrantToken,
