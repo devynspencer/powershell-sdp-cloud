@@ -28,22 +28,25 @@ function Request-ZohoAccessToken {
         $ClientSecret = Get-Secret @SecretParams -Name 'CLIENT_SECRET'
     }
 
-    if ($PSBoundParameters.ContainsKey('FilePath')) {
-        $FileContent = Get-Content -Raw -Path $FilePath | ConvertFrom-Json
-        $Body = @{
-            code = $FileContent.code
-            grant_type = $FileContent.grant_type
-            client_id = $FileContent.client_id
-            client_secret = $FileContent.client_secret
+    switch ($PSCmdlet.ParameterSetName) {
+        'FromParams' {
+            $Body = @{
+                code = $GrantToken
+                grant_type = 'authorization_code'
+                client_id = $ClientId
+                client_secret = $ClientSecret
+            }
         }
-    }
 
-    else {
-        $Body = @{
-            code = $GrantToken
-            grant_type = 'authorization_code'
-            client_id = $ClientId
-            client_secret = $ClientSecret
+        'FromFile' {
+            $FileContent = Get-Content -Raw -Path $FilePath | ConvertFrom-Json
+
+            $Body = @{
+                code = $FileContent.code
+                grant_type = $FileContent.grant_type
+                client_id = $FileContent.client_id
+                client_secret = $FileContent.client_secret
+            }
         }
     }
 
