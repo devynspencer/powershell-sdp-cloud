@@ -29,10 +29,16 @@ function Format-ZohoSearch {
         $Group,
 
         [string]
+        $Department,
+
+        [string]
         $Level,
 
         [string]
         $Priority,
+
+        [string]
+        $Urgency,
 
         [string]
         $Impact
@@ -92,12 +98,20 @@ function Format-ZohoSearch {
         $Criteria += Format-ZohoCriteria @Shared -Field 'group.name' -Values $Group
     }
 
+    if ($PSBoundParameters.ContainsKey('Department')) {
+        $Criteria += Format-ZohoCriteria @Shared -Field 'department.name' -Values $Department
+    }
+
     if ($PSBoundParameters.ContainsKey('Level')) {
         $Criteria += Format-ZohoCriteria @Shared -Field 'level.name' -Values $Level
     }
 
     if ($PSBoundParameters.ContainsKey('Priority')) {
         $Criteria += Format-ZohoCriteria @Shared -Field 'priority.name' -Values $Priority
+    }
+
+    if ($PSBoundParameters.ContainsKey('Urgency')) {
+        $Criteria += Format-ZohoCriteria @Shared -Field 'urgency.name' -Values $Urgency
     }
 
     if ($PSBoundParameters.ContainsKey('Impact')) {
