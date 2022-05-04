@@ -50,6 +50,10 @@ function Request-ZohoAccessToken {
         }
     }
 
+    # Record next expiration time
+    $script:ZohoAccessExpirationTime = (Get-Date).AddHours(1)
+
+    # Execute request
     $RestMethodParameters = @{
         Uri = 'https://accounts.zoho.com/oauth/v2/token'
         Method = 'Post'
