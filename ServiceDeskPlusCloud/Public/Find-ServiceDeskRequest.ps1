@@ -9,7 +9,8 @@ function Find-ServiceDeskRequest {
         $Portal,
 
         [ValidateNotNull()]
-        [string[]] $Status = 'Open',
+        [string[]]
+        $Status = 'Open',
 
         [ValidateNotNull()]
         $Technician
