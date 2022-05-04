@@ -19,6 +19,7 @@ function Find-ServiceDeskRequest {
     $SearchParams = $PSBoundParameters.Clone()
     $SearchParams.Remove('Portal')
 
+    # Build input data object
     $Data = @{
         list_info = @{
             row_count = 100
@@ -32,6 +33,7 @@ function Find-ServiceDeskRequest {
         input_data = ($Data | ConvertTo-Json -Depth 4 -Compress)
     }
 
+    # Send the request
     $RestMethodParameters = @{
         Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests"
         Headers = Format-ZohoHeader
@@ -41,6 +43,9 @@ function Find-ServiceDeskRequest {
 
     $Response = Invoke-RestMethod @RestMethodParameters
 
+    # Handle the response
+
+    # Format the response object
     foreach ($Request in $Response.requests) {
         [pscustomobject] [ordered] @{
             Requester = $Request.requester.email_id
