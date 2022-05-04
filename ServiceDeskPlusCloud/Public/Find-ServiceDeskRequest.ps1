@@ -1,4 +1,5 @@
 . "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
+. "$PSScriptRoot\..\private\Format-ZohoSearch.ps1"
 
 function Find-ServiceDeskRequest {
     param (
@@ -13,28 +14,17 @@ function Find-ServiceDeskRequest {
         $Technician
     )
 
+    # Build search object from PSBoundParameters to avoid a parade of
+    # statements like `if ($PSBoundParameters.ContainsKey("Foo")) { ... }`
+    $SearchParams = $PSBoundParameters.Clone()
+    $SearchParams.Remove('Portal')
+
     $Data = @{
         list_info = @{
             row_count = 100
             start_index = 1
             get_total_count = $true
-
-            search_criteria = @(
-                @{
-                    field = 'status.name'
-                    condition = 'is'
-                    values = $Status
-                }
-            )
-        }
-    }
-
-    if ($Technician) {
-        $Data.list_info.search_criteria += @{
-            field = 'technician.email_id'
-            condition = 'is'
-            logical_operator = 'and'
-            values = , $Technician
+            search_criteria = Format-ZohoSearch @SearchParams
         }
     }
 
