@@ -1,4 +1,4 @@
-function Request-ZohoAccessToken {
+function Request-ZohoRefreshToken {
     [CmdletBinding(DefaultParameterSetName = 'FromParams')]
     param (
         # Zoho grant token to exchange for an access token
