@@ -14,7 +14,10 @@ function Request-ZohoAccessToken {
         $FilePath,
 
         [switch]
-        $NoSave
+        $NoSave,
+
+        [switch]
+        $PassThru
     )
 
     # Retrieve secrets
@@ -69,5 +72,9 @@ function Request-ZohoAccessToken {
         # Store secrets from response
         Set-Secret @SecretParams -Name 'ACCESS_TOKEN' -Secret $Response.access_token
         Set-Secret @SecretParams -Name 'REFRESH_TOKEN' -Secret $Response.refresh_token
+    }
+
+    if ($PassThru) {
+        $Response
     }
 }
