@@ -11,7 +11,10 @@ function Request-ZohoAccessToken {
         $ClientSecret,
 
         [Parameter(Mandatory, ParameterSetName = 'FromFile')]
-        $FilePath
+        $FilePath,
+
+        [switch]
+        $NoSave
     )
 
     # Retrieve secrets
@@ -60,5 +63,11 @@ function Request-ZohoAccessToken {
         Body = $Body
     }
 
-    Invoke-RestMethod @RestMethodParameters
+    $Response = Invoke-RestMethod @RestMethodParameters
+
+    if (!$NoSave) {
+        # Store secrets from response
+        Set-Secret @SecretParams -Name 'ACCESS_TOKEN' -Secret $Response.access_token
+        Set-Secret @SecretParams -Name 'REFRESH_TOKEN' -Secret $Response.refresh_token
+    }
 }
