@@ -40,6 +40,7 @@ function Request-ZohoRefreshToken {
         $ClientSecret = Get-Secret @SecretParams -Name 'CLIENT_SECRET'
     }
 
+    # Build request
     switch ($PSCmdlet.ParameterSetName) {
         'FromParams' {
             $Body = @{
@@ -74,13 +75,16 @@ function Request-ZohoRefreshToken {
 
     $Response = Invoke-RestMethod @RestMethodParameters
 
+    # Handle response
+
+    # Store secrets from response
     if (!$NoSave) {
-        # Store secrets from response
         $SecretParams.Remove('AsPlainText')
         Set-Secret @SecretParams -Name 'ACCESS_TOKEN' -Secret $Response.access_token
         Set-Secret @SecretParams -Name 'REFRESH_TOKEN' -Secret $Response.refresh_token
     }
 
+    # Format output
     if ($PassThru) {
         $Response
     }
