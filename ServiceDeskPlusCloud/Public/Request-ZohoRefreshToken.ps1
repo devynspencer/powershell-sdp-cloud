@@ -30,6 +30,7 @@ function Request-ZohoRefreshToken {
     $SecretParams = @{
         AsPlainText = $true
         Vault = 'Zoho'
+        ErrorAction = 'Stop'
     }
 
     if (!$PSBoundParameters.ContainsKey('ClientId')) {
