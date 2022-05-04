@@ -1,3 +1,4 @@
+# TODO: this appears unused in some places
 function Resolve-ServiceDeskUri {
     param (
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]

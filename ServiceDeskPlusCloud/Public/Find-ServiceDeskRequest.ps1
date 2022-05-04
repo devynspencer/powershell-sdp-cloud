@@ -3,9 +3,6 @@
 function Find-ServiceDeskRequest {
     param (
         [Parameter(Mandatory)]
-        $AccessToken,
-
-        [Parameter(Mandatory)]
         $Portal,
 
         [ValidateNotNull()]

@@ -4,9 +4,6 @@
 function Suspend-ServiceDeskRequest {
     param (
         [Parameter(Mandatory)]
-        $AccessToken,
-
-        [Parameter(Mandatory)]
         $Portal,
 
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]

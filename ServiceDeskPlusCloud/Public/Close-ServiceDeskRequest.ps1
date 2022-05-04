@@ -3,9 +3,6 @@
 function Close-ServiceDeskRequest {
     param (
         [Parameter(Mandatory)]
-        $AccessToken,
-
-        [Parameter(Mandatory)]
         $Portal,
 
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
@@ -18,7 +15,6 @@ function Close-ServiceDeskRequest {
 
     begin {
         $SetParams = @{
-            AccessToken = $AccessToken
             Portal = $Portal
             Resolution = $Message
             Status = 'Resolved'

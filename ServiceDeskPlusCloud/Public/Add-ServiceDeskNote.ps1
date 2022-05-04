@@ -2,9 +2,6 @@
 
 function Add-ServiceDeskNote {
     param (
-        [Parameter(Mandatory)]
-        $AccessToken,
-
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Int64]
         $Id,
