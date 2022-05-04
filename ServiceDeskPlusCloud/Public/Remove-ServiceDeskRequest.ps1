@@ -13,13 +13,6 @@ function Remove-ServiceDeskRequest {
         $Id
     )
 
-    begin {
-        $Headers = @{
-            Authorization = "Zoho-oauthtoken $AccessToken"
-            Accept = 'application/vnd.manageengine.sdp.v3+json'
-        }
-    }
-
     process {
         foreach ($RequestId in $Id) {
             $RestMethodParameters = @{

@@ -13,13 +13,6 @@ function Get-ServiceDeskRequest {
         $Portal
     )
 
-    begin {
-        $Headers = @{
-            Authorization = "Zoho-Oauthtoken $AccessToken"
-            Accept = 'application/vnd.manageengine.sdp.v3+json'
-        }
-    }
-
     process {
         foreach ($RequestId in $Id) {
             $RestMethodParameters = @{
