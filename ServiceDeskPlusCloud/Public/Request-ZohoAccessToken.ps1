@@ -49,8 +49,8 @@ function Request-ZohoAccessToken {
     switch ($PSCmdlet.ParameterSetName) {
         'FromParams' {
             $Body = @{
-                code = $GrantToken
                 grant_type = 'refresh_token'
+                refresh_token = $RefreshToken
                 client_id = $ClientId
                 client_secret = $ClientSecret
             }
