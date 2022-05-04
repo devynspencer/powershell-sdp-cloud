@@ -41,7 +41,6 @@ function New-ServiceDeskRequest {
         $Impact
     )
 
-
     $Data = @{
         request = @{
             subject = $Subject
