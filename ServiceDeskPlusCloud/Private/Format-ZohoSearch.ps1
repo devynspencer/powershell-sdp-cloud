@@ -119,9 +119,5 @@ function Format-ZohoSearch {
     }
 
     # Build output object
-    $SearchObj = @{
-        search_criteria = $Criteria
-    }
-
-    $SearchObj
+    $Criteria
 }
