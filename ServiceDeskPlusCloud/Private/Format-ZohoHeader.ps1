@@ -7,7 +7,7 @@ function Format-ZohoHeader {
 
     # Search for access token if none specified
     if (!$PSBoundParameters.ContainsKey('AccessToken')) {
-        Get-Secret -Vault Zoho -AsPlainText -Name 'ACCESS_TOKEN'
+        $AccessToken = Get-Secret -Vault Zoho -AsPlainText -Name 'ACCESS_TOKEN'
     }
 
     # Generate the headers
