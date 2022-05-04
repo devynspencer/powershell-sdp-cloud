@@ -14,7 +14,28 @@ function Format-ZohoSearch {
         $Creator,
 
         [string]
-        $Requester
+        $Requester,
+
+        [string]
+        $Category,
+
+        [string]
+        $SubCategory,
+
+        [string]
+        $Item,
+
+        [string]
+        $Group,
+
+        [string]
+        $Level,
+
+        [string]
+        $Priority,
+
+        [string]
+        $Impact
     )
 
     $Criteria = @()
@@ -53,6 +74,34 @@ function Format-ZohoSearch {
         }
 
         $Criteria += Format-ZohoCriteria @Shared @RequesterParams
+    }
+
+    if ($PSBoundParameters.ContainsKey('Category')) {
+        $Criteria += Format-ZohoCriteria @Shared -Field 'category.name' -Values $Category
+    }
+
+    if ($PSBoundParameters.ContainsKey('SubCategory')) {
+        $Criteria += Format-ZohoCriteria @Shared -Field 'subcategory.name' -Values $SubCategory
+    }
+
+    if ($PSBoundParameters.ContainsKey('Item')) {
+        $Criteria += Format-ZohoCriteria @Shared -Field 'item.name' -Values $Item
+    }
+
+    if ($PSBoundParameters.ContainsKey('Group')) {
+        $Criteria += Format-ZohoCriteria @Shared -Field 'group.name' -Values $Group
+    }
+
+    if ($PSBoundParameters.ContainsKey('Level')) {
+        $Criteria += Format-ZohoCriteria @Shared -Field 'level.name' -Values $Level
+    }
+
+    if ($PSBoundParameters.ContainsKey('Priority')) {
+        $Criteria += Format-ZohoCriteria @Shared -Field 'priority.name' -Values $Priority
+    }
+
+    if ($PSBoundParameters.ContainsKey('Impact')) {
+        $Criteria += Format-ZohoCriteria @Shared -Field 'impact.name' -Values $Impact
     }
 
     # Build output object
