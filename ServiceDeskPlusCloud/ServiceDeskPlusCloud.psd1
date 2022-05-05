@@ -63,7 +63,7 @@
     FunctionsToExport = @(
         'Request-ZohoRefreshToken'
         'Request-ZohoAccessToken'
-        'Remove-ZohoRefreshToken'
+        'Revoke-ZohoRefreshToken'
         'Get-ServiceDeskRequest'
         'Find-ServiceDeskRequest'
         'Set-ServiceDeskRequest'

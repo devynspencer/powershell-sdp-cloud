@@ -1,4 +1,4 @@
-function Remove-ZohoRefreshToken {
+function Revoke-ZohoRefreshToken {
     param (
         [Parameter(Mandatory)]
         $RefreshToken
