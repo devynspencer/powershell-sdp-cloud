@@ -11,7 +11,10 @@ function Find-ServiceDeskRequest {
         $Status = 'Open',
 
         [ValidateNotNull()]
-        $Technician
+        $Technician,
+
+        [string[]]
+        $Fields
     )
 
     # Build search object from PSBoundParameters to avoid a parade of
@@ -27,6 +30,11 @@ function Find-ServiceDeskRequest {
             get_total_count = $true
             search_criteria = Format-ZohoSearch @SearchParams
         }
+    }
+
+    # Limit response object to specific fields
+    if ($PSBoundParameters.ContainsKey('Fields')) {
+        $Data.list_info.fields_required = $Fields
     }
 
     $Body = @{
@@ -64,6 +72,6 @@ function Find-ServiceDeskRequest {
             Maintenance = $Request.maintenance
             Status = $Request.status.name
             Group = $Request.group.name
-        }
+        } | select $Fields
     }
 }
