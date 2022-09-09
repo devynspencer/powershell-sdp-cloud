@@ -16,7 +16,7 @@ function Find-ServiceDeskRequest {
 
     # Build search object from PSBoundParameters to avoid a parade of
     # statements like `if ($PSBoundParameters.ContainsKey("Foo")) { ... }`
-    $SearchParams = $PSBoundParameters.Clone()
+    $SearchParams = $PSBoundParameters
     $SearchParams.Remove('Portal')
 
     # Build input data object
