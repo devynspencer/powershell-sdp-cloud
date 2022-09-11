@@ -1,6 +1,27 @@
 . "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
 . "$PSScriptRoot\..\private\Format-ZohoSearch.ps1"
 
+<#
+.SYNOPSIS
+    Find a ServiceDesk Plus request based on specified criteria.
+
+.PARAMETER Portal
+    The portal for the ServiceDesk Plus Cloud instance.
+
+.PARAMETER Status
+    Request status to filter results by.
+
+.PARAMETER Technician
+    Request technician to filter results by.
+
+.PARAMETER Fields
+    Request fields to include in results.
+
+.EXAMPLE
+    Find-ServiceDeskRequest -Portal portalname -Technician foo.bar@example.com
+    Return requests owned by the specified technician.
+#>
+
 function Find-ServiceDeskRequest {
     param (
         [Parameter(Mandatory)]
