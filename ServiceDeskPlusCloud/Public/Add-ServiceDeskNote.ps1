@@ -1,5 +1,29 @@
 . "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
 
+<#
+.SYNOPSIS
+    Add a note to a ServiceDesk Plus request.
+
+.PARAMETER Portal
+    The portal for the ServiceDesk Plus Cloud instance.
+
+.PARAMETER Id
+    The id of the ServiceDesk Plus request.
+
+.PARAMETER Message
+    The message to include in the note.
+
+.PARAMETER Notify
+    Notify the requester of the added note.
+
+.PARAMETER Public
+    Display the note to all users and the requester.
+
+.EXAMPLE
+    Add-ServiceDeskNote -Portal portalname -Id 123456 -Message "Encountered problem x."
+    Add a note to request 123456 in the specified ServiceDesk Plus Cloud instance.
+#>
+
 function Add-ServiceDeskNote {
     param (
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
