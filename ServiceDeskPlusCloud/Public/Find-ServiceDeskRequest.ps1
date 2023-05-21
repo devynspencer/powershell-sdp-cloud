@@ -45,11 +45,6 @@ function Find-ServiceDeskRequest {
         $NoTotalCount
     )
 
-    # Build search object from PSBoundParameters to avoid a parade of
-    # statements like `if ($PSBoundParameters.ContainsKey("Foo")) { ... }`
-    $SearchParams = $PSBoundParameters
-    $SearchParams.Remove('Portal')
-
     # Build input data object
     $Data = @{
         list_info = @{
