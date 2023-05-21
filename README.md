@@ -8,16 +8,6 @@ In order to obtain a temporary authorization code to authenticate to the API wit
 
 Follow the steps in the documentation to generate a temporary authentication code and supply the value to the `GrantToken` parameter of `New-ZohoAccessToken` or download the `self_client.json` file from the API client console and supply the path via the `FilePath` parameter.
 
-Using the `self_client.json` file:
-
-```powershell
-$LatestAuthFile = (Get-ChildItem -Path '~\Downloads\self_client*.json' | sort LastWriteTime -Descending)[0]
-
-$ZohoAuth = New-ZohoAccessToken -FilePath $LatestAuthFile
-```
-
-Or by specifying your credentials as parameters:
-
 ```powershell
 $NewTokenParams = @{
   GrantToken = '1000.f74e7b6fc16c95bbc1fa2f067962f84b.9768e796b6273774817032613ba6892a'
@@ -28,14 +18,19 @@ $NewTokenParams = @{
 $ZohoAuth = New-ZohoAccessToken @NewTokenParams
 ```
 
-Then use the token to interact with the API:
+Request and store the access token in the local secret store:
+
+```powershell
+Request-ZohoAccessToken -Verbose
+```
+
+Module functions will retrieve the access token from the store as needed, so it doesn't need to be specified:
 
 ```powershell
 $RequestParams = @{
     Status = 'Open', 'Onhold'
     Portal = 'is'
     Technician = 'devynspencer@users.noreply.github.com'
-    AccessToken = $ZohoAuth.access_token
 }
 
 $Tickets = Find-ServiceDeskRequest @RequestParams
