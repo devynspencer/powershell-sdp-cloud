@@ -78,7 +78,10 @@ function Find-ServiceDeskRequest {
         input_data = ($Data | ConvertTo-Json -Depth 4 -Compress)
     }
 
+    # TODO: Move this to a function that builds each request
     # Send the request
+    Write-Verbose "Sending request with body:`n$($Body.input_data)"
+
     $RestMethodParameters = @{
         Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests"
         Headers = Format-ZohoHeader
