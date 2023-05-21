@@ -72,27 +72,12 @@ function Find-ServiceDeskRequest {
 
     $Response = Invoke-RestMethod @RestMethodParameters
 
+    $Response
+
+    # TODO: Include error codes, metadata, and pagination info in response
+    # TODO: Add error handling based on error code
+
     # Handle the response
 
     # Format the response object
-    foreach ($Request in $Response.requests) {
-        [pscustomobject] [ordered] @{
-            Requester = $Request.requester.email_id
-            Template = $Request.template.name
-            CreatedTime = $Request.created_time.display_value
-            HasDraft = $Request.has_draft
-            CancelledComments = $Request.cancel_flag_comments
-            DisplayId = $Request.display_id
-            Subject = $Request.subject
-            Technician = $Request.technician.email_id
-            DueTime = $Request.due_by_time.display_value
-            IsServiceRequest = $Request.is_service_request
-            Cancelled = $Request.cancellation_requested
-            HasNotes = $Request.has_notes
-            Id = $Request.id
-            Maintenance = $Request.maintenance
-            Status = $Request.status.name
-            Group = $Request.group.name
-        } | select $Fields
-    }
 }
