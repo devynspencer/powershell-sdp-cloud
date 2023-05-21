@@ -10,7 +10,7 @@ function Format-ZohoHeader {
         $AccessToken = Get-Secret -Vault Zoho -AsPlainText -Name 'ACCESS_TOKEN'
     }
 
-    # Generate the headers
+    # Build header object
     $Headers = @{
         Authorization = "Zoho-Oauthtoken $AccessToken"
         Accept = 'application/vnd.manageengine.sdp.v3+json'
