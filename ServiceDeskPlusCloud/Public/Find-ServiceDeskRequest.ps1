@@ -32,10 +32,8 @@ function Find-ServiceDeskRequest {
         $Status = 'Open',
 
         [ValidateNotNull()]
-        $Technician,
+        $Technician
 
-        [string[]]
-        $Fields
     )
 
     # Build search object from PSBoundParameters to avoid a parade of
@@ -53,9 +51,6 @@ function Find-ServiceDeskRequest {
         }
     }
 
-    # Limit response object to specific fields
-    if ($PSBoundParameters.ContainsKey('Fields')) {
-        $Data.list_info.fields_required = $Fields
     }
 
     $Body = @{
