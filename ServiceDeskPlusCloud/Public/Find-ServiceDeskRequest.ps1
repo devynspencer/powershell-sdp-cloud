@@ -35,6 +35,10 @@ function Find-ServiceDeskRequest {
         $Technician,
 
 
+        # Maximum number of requests to return. Value passed to the row_count property of the
+        # list_info object passed to the API
+        $Limit = 100,
+
         # Do not include the total request count in response object. Value passed to the get_total_count
         # property of the list_info object passed to the API
         [switch]
@@ -49,9 +53,9 @@ function Find-ServiceDeskRequest {
     # Build input data object
     $Data = @{
         list_info = @{
-            row_count = 100
             get_total_count = $true
             search_criteria = Format-ZohoSearch @SearchParams
+            row_count = $Limit
         }
     }
 
