@@ -53,7 +53,6 @@ function Find-ServiceDeskRequest {
     # Build input data object
     $Data = @{
         list_info = @{
-            get_total_count = $true
             search_criteria = Format-ZohoSearch @SearchParams
             row_count = $Limit
         }
