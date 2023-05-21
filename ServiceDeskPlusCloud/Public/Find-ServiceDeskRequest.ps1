@@ -39,6 +39,11 @@ function Find-ServiceDeskRequest {
         # list_info object passed to the API
         $Limit = 100,
 
+        # Skip n requests, useful for pagination. Value passed to the start_index property of the
+        # list_info object passed to the API
+        # $StartIndex = 1,
+        $StartIndex,
+
         # Do not include the total request count in response object. Value passed to the get_total_count
         # property of the list_info object passed to the API
         [switch]
@@ -51,6 +56,10 @@ function Find-ServiceDeskRequest {
             search_criteria = Format-ZohoSearch @SearchParams
             row_count = $Limit
         }
+    }
+
+    if ($PSBoundParameters.ContainsKey('StartIndex')) {
+        $Data.list_info.start_index = $StartIndex
     }
 
     # Handle total item count, if switch present
