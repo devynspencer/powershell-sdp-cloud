@@ -12,5 +12,7 @@ function Format-ZohoHeader {
         Accept = $Accept
     }
 
+    Write-Verbose "Constructed headers:`n$(ConvertTo-Json $Headers)"
+
     $Headers
 }
