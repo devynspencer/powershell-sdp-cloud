@@ -32,8 +32,13 @@ function Find-ServiceDeskRequest {
         $Status = 'Open',
 
         [ValidateNotNull()]
-        $Technician
+        $Technician,
 
+
+        # Do not include the total request count in response object. Value passed to the get_total_count
+        # property of the list_info object passed to the API
+        [switch]
+        $NoTotalCount
     )
 
     # Build search object from PSBoundParameters to avoid a parade of
@@ -45,12 +50,14 @@ function Find-ServiceDeskRequest {
     $Data = @{
         list_info = @{
             row_count = 100
-            start_index = 1
             get_total_count = $true
             search_criteria = Format-ZohoSearch @SearchParams
         }
     }
 
+    # Handle total item count, if switch present
+    if (!$NoTotalCount) {
+        $Data.list_info.get_total_count = $true
     }
 
     $Body = @{
