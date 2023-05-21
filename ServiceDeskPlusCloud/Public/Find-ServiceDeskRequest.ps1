@@ -44,6 +44,9 @@ function Find-ServiceDeskRequest {
         # $StartIndex = 1,
         $StartIndex,
 
+        # TODO: Separate these into different parameter sets, **defaulting to Page for now**
+        $Page = 1,
+
         # Do not include the total request count in response object. Value passed to the get_total_count
         # property of the list_info object passed to the API
         [switch]
@@ -60,6 +63,10 @@ function Find-ServiceDeskRequest {
 
     if ($PSBoundParameters.ContainsKey('StartIndex')) {
         $Data.list_info.start_index = $StartIndex
+    }
+
+    if ($PSBoundParameters.ContainsKey('Page')) {
+        $Data.list_info.page = $Page
     }
 
     # Handle total item count, if switch present
