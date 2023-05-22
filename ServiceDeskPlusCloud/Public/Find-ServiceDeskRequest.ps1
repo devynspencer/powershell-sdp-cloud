@@ -1,5 +1,4 @@
 . "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
-. "$PSScriptRoot\..\private\Format-ZohoSearch.ps1"
 
 <#
 .SYNOPSIS
@@ -56,7 +55,6 @@ function Find-ServiceDeskRequest {
     # Build input data object
     $Data = @{
         list_info = @{
-            search_criteria = Format-ZohoSearch @SearchParams
             row_count = $Limit
         }
     }
