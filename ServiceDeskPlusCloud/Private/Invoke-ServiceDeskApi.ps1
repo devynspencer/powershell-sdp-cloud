@@ -134,11 +134,12 @@ function Invoke-ServiceDeskApi {
         Headers = Format-ZohoHeader
         Method = $Method
         Body = $Body
+        ContentType = 'application/x-www-form-urlencoded'
     }
 
     Write-Verbose "Making request $($RestMethodParameters | ConvertTo-Json -Compress)"
 
-    $Response = Invoke-RestMethod @RestMethodParameters -Verbose -ContentType 'application/x-www-form-urlencoded'
+    $Response = Invoke-RestMethod @RestMethodParameters
 
     # TODO: Add error handling based on error code
     if ([int] $Response.response_status.status_code -ne 2000) {
