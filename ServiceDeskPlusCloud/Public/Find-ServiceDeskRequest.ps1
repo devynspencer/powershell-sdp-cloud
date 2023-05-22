@@ -1,4 +1,5 @@
 . "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
+. "$PSScriptRoot\..\private\Invoke-ServiceDeskApi.ps1"
 
 <#
 .SYNOPSIS
@@ -46,46 +47,18 @@ function Find-ServiceDeskRequest {
         $Page = 1
     )
 
-    # Build input data object
-    $Data = @{
-        list_info = @{
-            row_count = $Limit
-        }
-    }
-
-    if ($PSBoundParameters.ContainsKey('StartIndex')) {
-        $Data.list_info.start_index = $StartIndex
     # TODO: Handle NoTotalCount?
+    $ApiParams = @{
+        Portal = $Portal
+        Resource = 'requests'
+        Limit = $Limit
+        Page = $Page
     }
 
-    if ($PSBoundParameters.ContainsKey('Page')) {
-        $Data.list_info.page = $Page
-    }
-
-
-    $Body = @{
-        input_data = ($Data | ConvertTo-Json -Depth 4 -Compress)
-    }
-
-    # TODO: Move this to a function that builds each request
-    # Send the request
-    Write-Verbose "Sending request with body:`n$($Body.input_data)"
-
-    $RestMethodParameters = @{
-        Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests"
-        Headers = Format-ZohoHeader
-        Method = 'Get'
-        Body = $Body
-    }
-
-    $Response = Invoke-RestMethod @RestMethodParameters
+    $Response = Invoke-ServiceDeskApi @ApiParams
 
     $Response
 
     # TODO: Include error codes, metadata, and pagination info in response
     # TODO: Add error handling based on error code
-
-    # Handle the response
-
-    # Format the response object
 }
