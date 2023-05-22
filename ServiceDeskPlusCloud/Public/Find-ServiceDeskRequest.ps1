@@ -51,6 +51,7 @@ function Find-ServiceDeskRequest {
         Resource = 'requests'
         Limit = $Limit
         Page = $Page
+        Operation = 'List'
     }
 
     $Response = Invoke-ServiceDeskApi @ApiParams
