@@ -33,7 +33,6 @@ function Find-ServiceDeskRequest {
         [ValidateNotNull()]
         $Technician,
 
-
         # Maximum number of requests to return. Value passed to the row_count property of the
         # list_info object passed to the API
         $Limit = 100,
@@ -44,12 +43,7 @@ function Find-ServiceDeskRequest {
         $StartIndex,
 
         # TODO: Separate these into different parameter sets, **defaulting to Page for now**
-        $Page = 1,
-
-        # Do not include the total request count in response object. Value passed to the get_total_count
-        # property of the list_info object passed to the API
-        [switch]
-        $NoTotalCount
+        $Page = 1
     )
 
     # Build input data object
@@ -61,16 +55,13 @@ function Find-ServiceDeskRequest {
 
     if ($PSBoundParameters.ContainsKey('StartIndex')) {
         $Data.list_info.start_index = $StartIndex
+    # TODO: Handle NoTotalCount?
     }
 
     if ($PSBoundParameters.ContainsKey('Page')) {
         $Data.list_info.page = $Page
     }
 
-    # Handle total item count, if switch present
-    if (!$NoTotalCount) {
-        $Data.list_info.get_total_count = $true
-    }
 
     $Body = @{
         input_data = ($Data | ConvertTo-Json -Depth 4 -Compress)
