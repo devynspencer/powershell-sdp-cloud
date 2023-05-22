@@ -18,7 +18,7 @@ function Invoke-ServiceDeskApi {
         $Portal,
 
         [Parameter(Mandatory)]
-        [ValidateSet('Get', 'List', 'New', 'Update', 'Remove')]
+        [ValidateSet('Get', 'List', 'New', 'Update', 'Remove', 'GetChild', 'ListChild', 'AddChild', 'UpdateChild', 'RemoveChild')]
         $Operation,
 
         # Resource type to operate on.
@@ -28,6 +28,21 @@ function Invoke-ServiceDeskApi {
 
         # Id of an existing resource to operate on.
         $Id,
+
+        # Child resource type, used when adding a child resource to an existing resource.
+        #
+        # Example: adding a task to a request
+        #   api/v3/requests/{request_id}/tasks
+        #
+        [ValidateSet('tasks', 'notes', 'worklogs', 'approvals', 'relations')]
+        $ChildResource,
+
+        # Id of an existing child resource to operate on.
+        #
+        # Example: Edit a task attached to a request
+        #   api/v3/requests/{request_id}/tasks/{task_id}
+        #
+        $ChildId,
 
         $ApiVersion = 'v3',
 
