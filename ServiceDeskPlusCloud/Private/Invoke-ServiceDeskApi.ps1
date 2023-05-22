@@ -9,13 +9,25 @@
 #>
 
 function Invoke-ServiceDeskApi {
+    # TODO: Validate length and pattern of id parameters? Must be text to allow for leading 0's.
+
+    # TODO: Would parameter sets based on each operation/group of similar operations be cleaner?
+
     param (
         [Parameter(Mandatory)]
         $Portal,
 
         [Parameter(Mandatory)]
+        [ValidateSet('Get', 'List', 'New', 'Update', 'Remove')]
+        $Operation,
+
+        # Resource type to operate on.
+        [Parameter(Mandatory)]
         [ValidateSet('requests', 'problems', 'assets', 'projects', 'changes', 'tasks', 'solutions', 'topics')]
         $Resource,
+
+        # Id of an existing resource to operate on.
+        $Id,
 
         $ApiVersion = 'v3',
 
