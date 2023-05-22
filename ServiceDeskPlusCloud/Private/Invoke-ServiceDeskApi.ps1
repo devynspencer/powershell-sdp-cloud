@@ -142,9 +142,9 @@ function Invoke-ServiceDeskApi {
     $Response = Invoke-RestMethod @RestMethodParameters
 
     # TODO: Add error handling based on error code
+    # TODO: Move error handling to a helper function?
     if ([int] $Response.response_status.status_code -ne 2000) {
         Write-Error "Request failed with status code $($Response.response_status)"
-        # Handle specific error codes or implement custom logic here
     }
 
     # TODO: Include error codes, metadata, and pagination info in response
