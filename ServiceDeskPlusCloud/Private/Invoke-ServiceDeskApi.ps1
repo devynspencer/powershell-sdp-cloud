@@ -106,11 +106,59 @@ function Invoke-ServiceDeskApi {
 
     Write-Verbose "Sending request with body:`n$($Body.input_data)"
 
+    # TODO: Move this to a separate helper function
     # Build the endpoint URI
+    $Uri = switch -regex ($Operation) {
+        # List or create a type of resource
+        '^(List|New)$' {
+            "https://sdpondemand.manageengine.com/app/$Portal/api/$ApiVersion/$Resource"
+        }
+
+        # Get or modify an existing resource
+        '^(Get|Update|Remove)$' {
+            if (!$PSBoundParameters.ContainsKey('Id')) {
+                throw "[Id] required when performing $($Switch.Current) operations"
+            }
+
+            "https://sdpondemand.manageengine.com/app/$Portal/api/$ApiVersion/$Resource/$Id"
+        }
+
+        # List or create a type of child resource attached to an existing resource
+        '^(ListChild|AddChild)$' {
+            if (!$PSBoundParameters.ContainsKey('Id')) {
+                throw "[Id] required when performing $($Switch.Current) operations"
+            }
+
+            if (!$PSBoundParameters.ContainsKey('ChildResource')) {
+                throw "[ChildResource] required when performing $($Switch.Current) operations"
+            }
+
+            "https://sdpondemand.manageengine.com/app/$Portal/api/$ApiVersion/$Resource/$Id/$ChildResource"
+        }
+
+        # Get or modify an existing child resource attached to an existing resource
+        '^(GetChild|UpdateChild|RemoveChild)$' {
+            if (!$PSBoundParameters.ContainsKey('Id')) {
+                throw "[Id] required when performing $($Switch.Current) operations"
+            }
+
+            if (!$PSBoundParameters.ContainsKey('ChildResource')) {
+                throw "[ChildResource] required when performing $($Switch.Current) operations"
+            }
+
+            if (!$PSBoundParameters.ContainsKey('ChildId')) {
+                throw "[ChildId] required when performing $($Switch.Current) operations"
+            }
+
+            "https://sdpondemand.manageengine.com/app/$Portal/api/$ApiVersion/$Resource/$Id/$ChildResource/$ChildId"
+        }
+    }
+
+    Write-Verbose "API URI built for operation [$Operation]: $Uri"
 
     # Make the request
     $RestMethodParameters = @{
-        Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/$ApiVersion/$Resource"
+        Uri = $Uri
         Headers = Format-ZohoHeader
         Method = $Method
         Body = $Body
