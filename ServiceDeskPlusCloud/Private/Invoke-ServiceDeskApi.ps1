@@ -13,9 +13,8 @@ function Invoke-ServiceDeskApi {
         [Parameter(Mandatory)]
         $Portal,
 
-        # TODO: add more resources
         [Parameter(Mandatory)]
-        [ValidateSet('requests', 'problems', 'assets', 'projects', 'changes', 'tasks', 'solutions')]
+        [ValidateSet('requests', 'problems', 'assets', 'projects', 'changes', 'tasks', 'solutions', 'topics')]
         $Resource,
 
         $ApiVersion = 'v3',
