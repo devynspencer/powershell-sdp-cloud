@@ -40,14 +40,12 @@ function Find-ServiceDeskRequest {
 
         # Skip n requests, useful for pagination. Value passed to the start_index property of the
         # list_info object passed to the API
-        # $StartIndex = 1,
         $StartIndex,
 
         # TODO: Separate these into different parameter sets, **defaulting to Page for now**
         $Page = 1
     )
 
-    # TODO: Handle NoTotalCount?
     $ApiParams = @{
         Portal = $Portal
         Resource = 'requests'
@@ -58,7 +56,4 @@ function Find-ServiceDeskRequest {
     $Response = Invoke-ServiceDeskApi @ApiParams
 
     $Response
-
-    # TODO: Include error codes, metadata, and pagination info in response
-    # TODO: Add error handling based on error code
 }
