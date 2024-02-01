@@ -156,7 +156,6 @@ function Invoke-ServiceDeskApi {
 
     else {
         Write-Verbose '[Invoke-ServiceDeskApi] Not requesting multiple resources, skipping pagination'
-        $InvokeRestParams.Body = (ConvertTo-Json $Body)
     }
 
     # Format request body, based on cryptic instructions from ManageEngine documentation
