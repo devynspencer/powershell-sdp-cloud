@@ -101,8 +101,9 @@ function Invoke-ServiceDeskApi {
 
     # For navigating and getting data, list_info can be provided with input_data. list_info object must be used as parameters for the requesting URL not as form data. list_info object should be encoded. list_info object can only be used for get all(get list).
 
+    # Note the types for the below! The **value** of input_data must be a JSON string.
     $Body = @{
-        input_data = @{}
+        input_data = @{} # value is JSON object
     }
 
     Write-Verbose "[Invoke-ServiceDeskApi] Making API call to [$RequestUri] using method [$Method] with body:`n$(ConvertTo-Json -InputObject $Body)"
