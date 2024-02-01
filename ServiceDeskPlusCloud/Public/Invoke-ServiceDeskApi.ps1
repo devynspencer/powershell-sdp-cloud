@@ -64,7 +64,35 @@ function Invoke-ServiceDeskApi {
         #   api/v3/requests/{request_id}/tasks/{task_id}
         #
         [string]
-        $ChildId
+        $ChildId,
+
+        # Behavior to use when response indicates that more records are available,
+        # i.e. { "list_info": { "has_more_rows": true, ... } }
+        #
+        # - Continue: Always request the next page of resources.
+        # - PolitelyContinue: Request additional resources, but wait at least $PaginateDelay seconds
+        #   between requests.
+        # - Stop: Do not request additional resources.
+        #
+        [ValidateSet('Continue', 'Stop', 'PolitelyContinue')]
+        $PaginateAction = 'PolitelyContinue',
+
+        # Number of seconds to wait between paginated requests. Polite clients will always wait at
+        # least n seconds between requests.
+        [ValidateRange(1, 30)]
+        $PaginateDelay = 5,
+
+        # Maximum number of requests to return. Value passed to the row_count property of the
+        # list_info object passed to the API
+        $Limit = 100,
+
+        # Skip n requests, useful for pagination. Value passed to the start_index property of the
+        # list_info object passed to the API
+        $StartIndex = 1,
+
+        # TODO: Separate these into different parameter sets, **defaulting to Page for now**
+        # Results page to start from
+        $Page = 1
     )
 
     # Strip protocol/scheme prefix from BaseUri to ensure RequestUri doesn't end up with "https://https://sdp.example.com" or similar.
@@ -106,19 +134,90 @@ function Invoke-ServiceDeskApi {
         input_data = @{} # value is JSON object
     }
 
-    Write-Verbose "[Invoke-ServiceDeskApi] Making API call to [$RequestUri] using method [$Method] with body:`n$(ConvertTo-Json -InputObject $Body)"
+    
+    # TODO: Move Body from InvokeRestParams.Body to standalone variable (easier if pagination actions require more API calls)
 
     # Build the request parameters
     $InvokeRestParams = @{
         Uri = $RequestUri
         Method = $Method # TODO: Determine request method to use based on context
         Headers = (Format-ZohoHeader -Portal $Portal)
-        Body = (ConvertTo-Json $Body)
     }
+
+    # Add pagination parameters to request body (if supported for request)
+    if ($Operation -in @('List', 'ListChild')) {
+        $Body.input_data.list_info = @{}
+        $Body.input_data.list_info.start_index = $StartIndex
+        $Body.input_data.list_info.page = $Page
+        $Body.input_data.list_info.row_count = $Limit
+
+        Write-Verbose "[Invoke-ServiceDeskApi] Multiple resources requested, including pagination parameters:`n$(ConvertTo-Json $InvokeRestParams.Body)"
+    }
+
+    else {
+        Write-Verbose '[Invoke-ServiceDeskApi] Not requesting multiple resources, skipping pagination'
+        $InvokeRestParams.Body = (ConvertTo-Json $Body)
+    }
+
+    # Format request body, based on cryptic instructions from ManageEngine documentation
+    $InvokeRestParams.Body = @{ input_data = (ConvertTo-Json $Body.input_data -Compress -Depth 4) };
+
+    Write-Verbose "[Invoke-ServiceDeskApi] Making API call to [$($InvokeRestParams.Uri)] using method [$($InvokeRestParams.Method)] with body:`n$(ConvertTo-Json -InputObject $InvokeRestParams.Body)"
+
 
     # Perform the API call using the constructed request URI
     $Response = Invoke-RestMethod @InvokeRestParams
 
-    # Return the API response
-    $Response
+    # Cache results while handling pagination
+    $Results = @($Response."$Resource")
+
+    do {
+        # Increment pagination counter and previous response for reference
+        $Page += 1
+        $Previous = $Response
+
+        Write-Verbose "[Invoke-ServiceDeskApi] More resources are available! Pagination behavior is [$PaginateAction]..."
+        Write-Verbose "[Invoke-ServiceDeskApi] Continuing on page [$Page] ..."
+
+        # Rebuild body for next API call
+        $Body = @{ input_data = @{} }
+        $Body.input_data.list_info = @{}
+        $Body.input_data.list_info.page = $Page
+        $Body.input_data.list_info.row_count = $Limit
+
+        # Format input data payload and add to request body
+        $InvokeRestParams.Body = @{ input_data = (ConvertTo-Json $Body.input_data -Compress -Depth 4) };
+
+        # Apply selected paginate action to results
+        switch ($PaginateAction) {
+            'Continue' {
+                Write-Verbose '[Invoke-ServiceDeskApi] PaginateAction set to [Continue]. Requesting next page ...'
+
+                $Response = Invoke-RestMethod @InvokeRestParams -Verbose
+                $Results += $Response."$Resource"
+
+                Write-Verbose "[Invoke-ServiceDeskApi] Pagination: [$($Response.list_info)]"
+            }
+
+            'PolitelyContinue' {
+                Write-Verbose "[Invoke-ServiceDeskApi] PaginateAction set to [ContinuePolitely]. Waiting [$PaginateDelay] seconds before requesting next page ..."
+
+                Start-Sleep -Seconds $PaginateDelay -Verbose
+                $Response = Invoke-RestMethod @InvokeRestParams -Verbose
+                $Results += $Response."$Resource"
+
+                Write-Verbose "[Invoke-ServiceDeskApi] Pagination: [$($Response.list_info)]"
+            }
+
+            'Stop' {
+                Write-Verbose '[Invoke-ServiceDeskApi] PaginateAction set to [Stop]. Skipping additional records ...'
+                break
+            }
+        }
+    }
+
+    until (!$Response.list_info.has_more_rows)
+
+    # Return array of paginated results
+    $Results
 }
