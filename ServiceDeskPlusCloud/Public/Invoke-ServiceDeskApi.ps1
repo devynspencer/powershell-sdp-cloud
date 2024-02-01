@@ -72,7 +72,7 @@ function Invoke-ServiceDeskApi {
 
     # Construct request URI based on the provided parameters
     # Note: $Portal is no longer used apparently
-    $RequestUri = "https://$BaseUri/api/v3/$Resource"s
+    $RequestUri = "https://$BaseUri/api/v3/$Resource"
 
     if ($PSBoundParameters.ContainsKey('Id')) {
         $RequestUri += "/$Id"
