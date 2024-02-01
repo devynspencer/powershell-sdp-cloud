@@ -134,7 +134,6 @@ function Invoke-ServiceDeskApi {
         input_data = @{} # value is JSON object
     }
 
-    
     # TODO: Move Body from InvokeRestParams.Body to standalone variable (easier if pagination actions require more API calls)
 
     # Build the request parameters
@@ -142,6 +141,7 @@ function Invoke-ServiceDeskApi {
         Uri = $RequestUri
         Method = $Method # TODO: Determine request method to use based on context
         Headers = (Format-ZohoHeader -Portal $Portal)
+        Verbose = $true
     }
 
     # Add pagination parameters to request body (if supported for request)
@@ -162,7 +162,7 @@ function Invoke-ServiceDeskApi {
     # Format request body, based on cryptic instructions from ManageEngine documentation
     $InvokeRestParams.Body = @{ input_data = (ConvertTo-Json $Body.input_data -Compress -Depth 4) };
 
-    Write-Verbose "[Invoke-ServiceDeskApi] Making API call to [$($InvokeRestParams.Uri)] using method [$($InvokeRestParams.Method)] with body:`n$(ConvertTo-Json -InputObject $InvokeRestParams.Body)"
+    Write-Verbose "[Invoke-ServiceDeskApi] Making API call to [$($InvokeRestParams.Uri)] using method [$($InvokeRestParams.Method)] with body:`n$(ConvertTo-Json $InvokeRestParams.Body)"
 
 
     # Perform the API call using the constructed request URI
@@ -193,7 +193,7 @@ function Invoke-ServiceDeskApi {
             'Continue' {
                 Write-Verbose '[Invoke-ServiceDeskApi] PaginateAction set to [Continue]. Requesting next page ...'
 
-                $Response = Invoke-RestMethod @InvokeRestParams -Verbose
+                $Response = Invoke-RestMethod @InvokeRestParams
                 $Results += $Response."$Resource"
 
                 Write-Verbose "[Invoke-ServiceDeskApi] Pagination: [$($Response.list_info)]"
@@ -202,8 +202,8 @@ function Invoke-ServiceDeskApi {
             'PolitelyContinue' {
                 Write-Verbose "[Invoke-ServiceDeskApi] PaginateAction set to [ContinuePolitely]. Waiting [$PaginateDelay] seconds before requesting next page ..."
 
-                Start-Sleep -Seconds $PaginateDelay -Verbose
-                $Response = Invoke-RestMethod @InvokeRestParams -Verbose
+                Start-Sleep -Seconds $PaginateDelay
+                $Response = Invoke-RestMethod @InvokeRestParams
                 $Results += $Response."$Resource"
 
                 Write-Verbose "[Invoke-ServiceDeskApi] Pagination: [$($Response.list_info)]"
