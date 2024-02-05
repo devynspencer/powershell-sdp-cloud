@@ -95,6 +95,11 @@ function Invoke-ServiceDeskApi {
         $Page = 1
     )
 
+    # Attempt to identify if this was called recursively
+    if ($Page -gt 1) {
+        Write-Verbose "[Invoke-ServiceDeskApi] Page [$Page] is greater than 1. Assuming this call was recursive."
+    }
+
     # Strip protocol/scheme prefix from BaseUri to ensure RequestUri doesn't end up with "https://https://sdp.example.com" or similar.
     $BaseUri = $BaseUri -replace 'https://' -replace '/api/v3/'
 
