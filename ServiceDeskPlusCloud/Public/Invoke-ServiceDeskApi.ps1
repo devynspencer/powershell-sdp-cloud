@@ -95,8 +95,8 @@ function Invoke-ServiceDeskApi {
     )
 
     # Attempt to identify if this was called recursively
-    if ($Page -gt 1) {
-        Write-Verbose "[Invoke-ServiceDeskApi] Page [$Page] is greater than 1. Assuming this call was recursive."
+    if ((Get-PSCallStack)[1].Command -eq $MyInvocation.MyCommand) {
+        Write-Warning 'Function has same name as calling function. Likely recursive.'
     }
 
     # Strip protocol/scheme prefix from BaseUri to ensure RequestUri doesn't end up with "https://https://sdp.example.com" or similar.
