@@ -175,10 +175,9 @@ function Invoke-ServiceDeskApi {
     }
 
     # Format request body, based on cryptic instructions from ManageEngine documentation
-    $InvokeRestParams.Body = @{ input_data = (ConvertTo-Json $Body.input_data -Compress -Depth 4) };
+    $InvokeRestParams.Body = @{ input_data = (ConvertTo-Json $Body.input_data -Compress -Depth 4) }
 
-    Write-Verbose "[Invoke-ServiceDeskApi] Making API call to [$($InvokeRestParams.Uri)] using method [$($InvokeRestParams.Method)] with body:`n$(ConvertTo-Json $InvokeRestParams.Body)"
-
+    Write-Verbose "[Invoke-ServiceDeskApi] Sending $Method request to [$($InvokeRestParams.Uri)] with payload: $($InvokeRestParams.Body.input_data)"
 
     # Perform the API call using the constructed request URI
     $Response = Invoke-RestMethod @InvokeRestParams
