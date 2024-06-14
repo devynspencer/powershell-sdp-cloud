@@ -4,9 +4,6 @@
 .SYNOPSIS
     Get a ServiceDesk Plus request by id.
 
-.PARAMETER Portal
-    The portal for the ServiceDesk Plus Cloud instance.
-
 .PARAMETER Id
     The id of the ServiceDesk Plus request.
 
@@ -20,15 +17,11 @@ function Get-ServiceDeskRequest {
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Int64]
         $Id,
-
-        [Parameter(Mandatory)]
-        $Portal
     )
 
     process {
         foreach ($RequestId in $Id) {
             $RestMethodParameters = @{
-                Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests/$RequestId"
                 Headers = Format-ZohoHeader
                 Method = 'Get'
             }
