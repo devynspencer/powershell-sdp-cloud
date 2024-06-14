@@ -2,9 +2,9 @@
 
 PowerShell module focused on manipulating the ServiceDeskPlus OnDemand (cloud) API.
 
-
 ## Getting Started
 In order to obtain a temporary authorization code to authenticate to the API with, you first need to register a self-client application via the [ZOHO API Client Console](https://api-console.zoho.com/). See the [ManageEngine API documentation](https://www.manageengine.com/products/service-desk/sdpod-v3-api/SDPOD-V3-API.html#authorization-request) for the full documentation on registration.
+
 
 Follow the steps in the documentation to generate a temporary authentication code and supply the value to the `GrantToken` parameter of `New-ZohoAccessToken` or download the `self_client.json` file from the API client console and supply the path via the `FilePath` parameter.
 
@@ -36,8 +36,8 @@ $RequestParams = @{
 $Tickets = Find-ServiceDeskRequest @RequestParams
 ```
 
-
 ### Default Parameters
+
 PowerShell allows you to save default values for parameters via the [PSDefaultParameterValues](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_parameters_default_values) variable.
 
 Add defaults to your PowerShell profile to limit the number of parameters that need to be specified when executing `ServiceDeskPlusCloud` functions:
@@ -48,7 +48,6 @@ Add defaults to your PowerShell profile to limit the number of parameters that n
 $PSDefaultParameterValues['*-ServiceDeskPlus*:Portal'] = 'is'
 $PSDefaultParameterValues['Find-ServiceDeskPlusRequest:Technician'] = 'devynspencer@users.noreply.github.com'
 ```
-
 
 ## Testing
 First install the [Pester](https://github.com/pester/Pester) module:
