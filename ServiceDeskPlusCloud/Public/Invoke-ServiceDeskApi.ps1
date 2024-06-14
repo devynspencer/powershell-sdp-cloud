@@ -178,6 +178,8 @@ function Invoke-ServiceDeskApi {
     # Add pagination parameters to request body (if supported for request)
     if ($Operation -in @('List', 'ListChild')) {
         $Body.input_data.list_info = @{}
+
+        # Add pagination parameters to request body
         $Body.input_data.list_info.start_index = $StartIndex
         $Body.input_data.list_info.page = $Page
         $Body.input_data.list_info.row_count = $Limit
@@ -208,24 +210,14 @@ function Invoke-ServiceDeskApi {
     #   Invoke-ServiceDeskApi -Verbose -Method Get -Portal isservicedesk -Resource requests -BaseUri https://sdp.oya.state.or.us -Operation ListChild -Id 118870000020103167 -ChildResource tasks -Limit 2
     # Using ContainsKey to ensure cases where no child resources exist are handled the same
 
-    do {
-        # Increment pagination counter and previous response for reference
-        $Page += 1
-        $Previous = $Response
+    # TODO: Move to separate function, as this is a lot of logic for a single function
 
-        Write-Verbose "[Invoke-ServiceDeskApi] More resources are available! Pagination behavior is [$PaginateAction]..."
-        Write-Verbose "[Invoke-ServiceDeskApi] Continuing on page [$Page] ..."
     # TODO: This seems more optimistic than cautious. One inconsistently named resource and it's broken
     # i.e. api/v3/unicorn instead of api/v3/unicorns
     # TODO: Need to factor in whether a ChildResource was specified, as in that case the response object
     #   won't contain a property named "$Resource" (or "$SingleResource" either, as currently written),
     #   the property should then match "$ChildResource" (or the singular resource name)
 
-        # Rebuild body for next API call
-        $Body = @{ input_data = @{} }
-        $Body.input_data.list_info = @{}
-        $Body.input_data.list_info.page = $Page
-        $Body.input_data.list_info.row_count = $Limit
     # Determine expected property name from response object, based on operation type. For example, the
     # response to a "List" operation for "requests" should contain a "requests" property. Conversely,
     # a response to a "ListChild" operation should contain the plural form of the child resource name.
@@ -287,39 +279,58 @@ function Invoke-ServiceDeskApi {
         throw "Expected response object to contain [$ResponsePropertyName]:`n`n$(ConvertTo-Json $Response -Compress)`n`n$Error"
     }
 
-        # Format input data payload and add to request body
-        $InvokeRestParams.Body = @{ input_data = (ConvertTo-Json $Body.input_data -Compress -Depth 4) };
+    # TODO: Cleanup pagination verbose statements below - replace with 1-2 statements for "More .. available" and maybe "Paginate action is [...] ..." **and then** explain what is happening specific to each case
 
-        # Apply selected paginate action to results
+    # Handle pagination and request remaining pages
+    if ($Response.list_info -and $Response.list_info.has_more_rows) {
+        # Check if current page is over value specified in PageLimit
+        if ($Page -gt $PageLimit) {
+            Write-Verbose "[Invoke-ServiceDeskApi] Maximum number of requests reached ($PageLimit)! Stopping pagination after $($Page - 1) pages ..."
+            Write-Verbose "[Invoke-ServiceDeskApi] This is a client-side behavior to avoid an endless loop of pagination attempts. The limit can be changed via the PageLimit parameter (currently $PageLimit)."
+            break
+        }
+
+        # Increment current page number and check if specified page limit has been reached
+        $Page += 1
+
+        # Reuse bound parameters from original function call, updating anything changed during pagination
+        # TODO: Ensure this is a *deep* copy
+        # TODO: Identify original vs. recursive function calls somehow
+        $InvokeParams = $PSBoundParameters
+        $InvokeParams['Page'] = $Page
+
+        # Handle pagination based on specified behavior
         switch ($PaginateAction) {
             'Continue' {
-                Write-Verbose '[Invoke-ServiceDeskApi] PaginateAction set to [Continue]. Requesting next page ...'
+                Write-Verbose "[Invoke-ServiceDeskApi] More resources are available! Executing new request on page $Page ..."
 
-                $Response = Invoke-RestMethod @InvokeRestParams
-                $Results += $Response."$Resource"
+                $Response = Invoke-ServiceDeskApi @InvokeParams
+                $Results += $Response
 
-                Write-Verbose "[Invoke-ServiceDeskApi] Pagination: [$($Response.list_info)]"
+                Write-Verbose "[Invoke-ServiceDeskApi] Added [$($Response.Count)] resources from page $Page to results."
             }
 
             'PolitelyContinue' {
-                Write-Verbose "[Invoke-ServiceDeskApi] PaginateAction set to [ContinuePolitely]. Waiting [$PaginateDelay] seconds before requesting next page ..."
+                Write-Verbose "[Invoke-ServiceDeskApi] More resources are available! Executing new request on page $Page in $PaginateDelay seconds ..."
 
                 Start-Sleep -Seconds $PaginateDelay
-                $Response = Invoke-RestMethod @InvokeRestParams
-                $Results += $Response."$Resource"
+                $Response = Invoke-ServiceDeskApi @InvokeParams
+                $Results += $Response
 
-                Write-Verbose "[Invoke-ServiceDeskApi] Pagination: [$($Response.list_info)]"
+                Write-Verbose "[Invoke-ServiceDeskApi] Added [$($Response.Count)] resources from page $Page to results."
             }
 
+            # TODO: Why is this called Stop instead of Skip or Ignore etc?
             'Stop' {
-                Write-Verbose '[Invoke-ServiceDeskApi] PaginateAction set to [Stop]. Skipping additional records ...'
+                Write-Verbose '[Invoke-ServiceDeskApi] More resources are available, but will be skipped due to PaginateAction.'
                 break
             }
         }
     }
 
-    until (!$Response.list_info.has_more_rows)
+    # TODO: Format property names using ConvertTo-PascalCase or similar. The Zoho properties are gross
 
-    # Return array of paginated results
+    # Return array of all results
+    Write-Verbose "[Invoke-ServiceDeskApi] Returning [$($Results.Count)] $ResponsePropertyName, in total"
     $Results
 }
