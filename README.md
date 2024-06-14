@@ -74,6 +74,7 @@ This module attempts to reuse environment data from a variety of sources, namely
 | OAuth token used to obtain new access tokens. Unlimited lifetime, until revoked by the user. | REFRESH_TOKEN | ZOHO_REFRESH_TOKEN   |
 | OAuth token sent to server to access protected resources.                                    | ACCESS_TOKEN  | ZOHO_ACCESS_TOKEN    |
 | Unique identifier of the ServiceDesk Plus Cloud instance to interact with.                   | PORTAL_NAME   | ZOHO_PORTAL_NAME     |
+| Base URI of the ServiceDesk Plus Cloud instance to interact with.                            | BASE_URI      | ZOHO_BASE_URI        |
 
 ### Secret Store
 
@@ -100,7 +101,8 @@ $ZohoSecrets = @(
     @{ Name = 'CLIENT_ID'; Value = '...' },
     @{ Name = 'CLIENT_SECRET'; Value = '...' },
     @{ Name = 'REFRESH_TOKEN'; Value = '...' },
-    @{ Name = 'PORTAL_NAME'; Value = '...' }
+    @{ Name = 'PORTAL_NAME'; Value = '...' },
+    @{ Name = 'BASE_URI'; Value = 'https://sdp.example.com/' }
 )
 
 # Register a new secret vault and store the secrets
@@ -118,4 +120,5 @@ ZOHO_CLIENT_SECRET
 ZOHO_REFRESH_TOKEN
 ZOHO_ACCESS_TOKEN
 ZOHO_PORTAL_NAME
+ZOHO_BASE_URI
 ```
