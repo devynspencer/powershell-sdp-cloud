@@ -15,7 +15,7 @@ function Format-ZohoHeader {
         'Content-Type' = $ContentType
     }
 
-    Write-Verbose "Constructed headers:`n$(ConvertTo-Json $Headers)"
+    Write-Verbose "Constructed headers: $(ConvertTo-Json $Headers -Compress)"
 
     $Headers
 }
