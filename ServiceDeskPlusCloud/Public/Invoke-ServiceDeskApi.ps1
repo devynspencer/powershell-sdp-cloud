@@ -11,10 +11,9 @@ function Invoke-ServiceDeskApi {
         $Method = 'Get',
 
         # The ServiceDesk Plus cloud portal name for the request.
-        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string]
-        $Portal,
+        $Portal = (Get-Secret -Vault Zoho -AsPlainText -Name 'PORTAL_NAME'),
 
         # The API operation to perform. Determines structure of request URI, as well as required parameters.
         [Parameter(Mandatory)]
