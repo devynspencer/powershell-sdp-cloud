@@ -15,6 +15,9 @@ function Invoke-ServiceDeskApi {
         [string]
         $Portal = (Get-Secret -Vault Zoho -AsPlainText -Name 'PORTAL_NAME'),
 
+        # Additional parameters for the request. Examples: mesage body of a note to add, details of a new change request
+        $Data,
+
         # The API operation to perform. Determines structure of request URI, as well as required parameters.
         [Parameter(Mandatory)]
         [ValidateSet(
@@ -140,6 +143,11 @@ function Invoke-ServiceDeskApi {
     # Note the types for the below! The **value** of input_data must be a JSON string.
     $Body = @{
         input_data = @{} # value is JSON object
+    }
+
+    if ($PSBoundParameters.ContainsKey('Data')) {
+        Write-Verbose "[Invoke-ServiceDeskApi] adding specified data to payload:`n$(ConvertTo-Json -Compress $Data)"
+        $Body.input_data += $Data
     }
 
     # TODO: Move Body from InvokeRestParams.Body to standalone variable (easier if pagination actions require more API calls)
