@@ -99,7 +99,7 @@ Set-SecretStoreConfiguration @SecretStoreParams
 $ZohoSecrets = @(
     @{ Name = 'CLIENT_ID'; Value = '...' },
     @{ Name = 'CLIENT_SECRET'; Value = '...' },
-    @{ Name = 'REFRESH_TOKEN'; Value = '...' }
+    @{ Name = 'REFRESH_TOKEN'; Value = '...' },
     @{ Name = 'PORTAL_NAME'; Value = '...' }
 )
 
