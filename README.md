@@ -3,12 +3,13 @@
 PowerShell module focused on manipulating the ServiceDeskPlus OnDemand (cloud) API.
 
 ## Getting Started
-In order to obtain a temporary authorization code to authenticate to the API with, you first need to register a self-client application via the [ZOHO API Client Console](https://api-console.zoho.com/). See the [ManageEngine API documentation](https://www.manageengine.com/products/service-desk/sdpod-v3-api/SDPOD-V3-API.html#authorization-request) for the full documentation on registration.
 
+In order to obtain a temporary authorization code to authenticate to the API with, you first need to register a self-client application via the [ZOHO API Client Console](https://api-console.zoho.com/). See the [ManageEngine API documentation](https://www.manageengine.com/products/service-desk/sdpod-v3-api/SDPOD-V3-API.html#authorization-request) on [generating access and refresh tokens](https://www.manageengine.com/products/service-desk/sdpod-v3-api/getting-started/oauth-2.0.html#generate-access-token-and-refresh-token) for more information.
 
 Follow the steps in the documentation to generate a temporary authentication code and supply the value to the `GrantToken` parameter of `New-ZohoAccessToken` or download the `self_client.json` file from the API client console and supply the path via the `FilePath` parameter.
 
 ```powershell
+# Replace the following examples with those obtained from the Zoho developer portal, obviously
 $NewTokenParams = @{
   GrantToken = '1000.f74e7b6fc16c95bbc1fa2f067962f84b.9768e796b6273774817032613ba6892a'
   ClientId = '1000.15S25B602CISR5WO9RUZ8UT39O3RIH'
