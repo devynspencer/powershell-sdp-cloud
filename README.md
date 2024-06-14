@@ -67,13 +67,13 @@ Invoke-Pester
 
 This module attempts to reuse environment data from a variety of sources, namely environment variables and the local secret store. Be sure to set the following environment variables or update the configurations accordingly.
 
-| Description                                                                                  | Name (Secret Store) | Name (Environment Variable) |
-| -------------------------------------------------------------------------------------------- | ------------------- | --------------------------- |
-| The consumer key generated from the connected application.                                   | CLIENT_ID           | ZOHO_CLIENT_ID              |
-| The consumer secret generated from the connected application.                                | CLIENT_SECRET       | ZOHO_CLIENT_SECRET          |
-| OAuth token used to obtain new access tokens. Unlimited lifetime, until revoked by the user. | REFRESH_TOKEN       | ZOHO_REFRESH_TOKEN          |
-| OAuth token sent to server to access protected resources.                                    | ACCESS_TOKEN        | ZOHO_ACCESS_TOKEN           |
-| Unique identifier of the ServiceDesk Plus Cloud instance to interact with.                   | PORTAL_NAME         | ZOHO_PORTAL_NAME            |
+| Description                                                                                  | Secret Name   | Environment Variable |
+| -------------------------------------------------------------------------------------------- | ------------- | -------------------- |
+| The consumer key generated from the connected application.                                   | CLIENT_ID     | ZOHO_CLIENT_ID       |
+| The consumer secret generated from the connected application.                                | CLIENT_SECRET | ZOHO_CLIENT_SECRET   |
+| OAuth token used to obtain new access tokens. Unlimited lifetime, until revoked by the user. | REFRESH_TOKEN | ZOHO_REFRESH_TOKEN   |
+| OAuth token sent to server to access protected resources.                                    | ACCESS_TOKEN  | ZOHO_ACCESS_TOKEN    |
+| Unique identifier of the ServiceDesk Plus Cloud instance to interact with.                   | PORTAL_NAME   | ZOHO_PORTAL_NAME     |
 
 ### Secret Store
 
