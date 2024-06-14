@@ -63,19 +63,59 @@ You're ready to run Pester tests:
 Invoke-Pester
 ```
 
+## Environment
 
-## Environment Variables
+This module attempts to reuse environment data from a variety of sources, namely environment variables and the local secret store. Be sure to set the following environment variables or update the configurations accordingly.
 
-Some parts of this module assume the use of environment variables for the storage of sensitive
-"secrets" like account names or API tokens.
+| Description                                                                                  | Name (Secret Store) | Name (Environment Variable) |
+| -------------------------------------------------------------------------------------------- | ------------------- | --------------------------- |
+| The consumer key generated from the connected application.                                   | CLIENT_ID           | ZOHO_CLIENT_ID              |
+| The consumer secret generated from the connected application.                                | CLIENT_SECRET       | ZOHO_CLIENT_SECRET          |
+| OAuth token used to obtain new access tokens. Unlimited lifetime, until revoked by the user. | REFRESH_TOKEN       | ZOHO_REFRESH_TOKEN          |
+| OAuth token sent to server to access protected resources.                                    | ACCESS_TOKEN        | ZOHO_ACCESS_TOKEN           |
+| Unique identifier of the ServiceDesk Plus Cloud instance to interact with.                   | PORTAL_NAME         | ZOHO_PORTAL_NAME            |
 
-Specifically, be sure to either set the following environment variables or update the
-configurations accordingly:
+### Secret Store
 
+This module uses the `Microsoft.PowerShell.SecretStore` module to store sensitive information like API tokens and passwords. Before using the module, you need to configure the secret store and store required secrets:
 
+```powershell
+# Install required modules
+Install-Module Microsoft.PowerShell.SecretManagement
+Install-Module Microsoft.PowerShell.SecretStore
 
+# Configure secret store settings
+$SecretStoreParams = @{
+    Authentication = 'Password'
+    Password = (ConvertTo-SecureString -AsPlainText -Force 'mypassword12345')
+    Scope = 'CurrentUser'
+    Interaction = 'None'
+    Confirm = $false
+}
 
+Set-SecretStoreConfiguration @SecretStoreParams
 
+# Replace the values with your own, obviously
+$ZohoSecrets = @(
+    @{ Name = 'CLIENT_ID'; Value = '...' },
+    @{ Name = 'CLIENT_SECRET'; Value = '...' },
+    @{ Name = 'REFRESH_TOKEN'; Value = '...' }
+    @{ Name = 'PORTAL_NAME'; Value = '...' }
+)
 
+# Register a new secret vault and store the secrets
+Register-SecretVault -ModuleName Microsoft.PowerShell.SecretStore -Name Zoho
+$ZohoSecrets | % { Set-Secret -Name $_.Name -Secret $_.Value -Vault Zoho }
+```
 
+### Environment Variables
 
+Alternatively, you can set the following environment variables to avoid using the secret store:
+
+```
+ZOHO_CLIENT_ID
+ZOHO_CLIENT_SECRET
+ZOHO_REFRESH_TOKEN
+ZOHO_ACCESS_TOKEN
+ZOHO_PORTAL_NAME
+```
