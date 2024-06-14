@@ -106,9 +106,13 @@ function Invoke-ServiceDeskApi {
     # Note: $Portal is no longer used apparently
     $RequestUri = "https://$BaseUri/api/v3/$Resource"
 
+    Write-Verbose "[Invoke-ServiceDeskApi] Base URI: $BaseUri"
+
     if ($PSBoundParameters.ContainsKey('Id')) {
         $RequestUri += "/$Id"
     }
+
+    Write-Verbose "[Invoke-ServiceDeskApi] Request URI: $RequestUri"
 
     if ($PSBoundParameters.ContainsKey('ChildResource')) {
         $RequestUri += "/$ChildResource"
@@ -118,7 +122,7 @@ function Invoke-ServiceDeskApi {
         $RequestUri += "/$ChildId"
     }
 
-    Write-Verbose "[Invoke-ServiceDeskApi] URI constructed!`n$(ConvertTo-Json @{ BaseUri = $BaseUri; RequestUri = $RequestUri })"
+    Write-Verbose "[Invoke-ServiceDeskApi] Request URI after appending child resource path: $RequestUri"
 
     # Construct request body
     #
