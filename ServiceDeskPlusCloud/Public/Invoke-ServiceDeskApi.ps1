@@ -84,6 +84,10 @@ function Invoke-ServiceDeskApi {
         [ValidateRange(1, 30)]
         $PaginateDelay = 5,
 
+        # Maximum number of total requests to attempt in a given execution. Intended to avoid an endless
+        # loop of requests when paginating multiple resources, or building out new queries.
+        $PageLimit = 10,
+
         # Maximum number of requests to return. Value passed to the row_count property of the
         # list_info object passed to the API
         $Limit = 100,
