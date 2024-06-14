@@ -74,14 +74,8 @@ configurations accordingly:
 
 
 
-### Builder
 
-- `BUILDER_STAGING_REPOSITORY_PATH`: Filesystem path to use as the source for the local staging PSRepository.
 
-- `BUILDER_ORG_REGISTRY_SOURCE_URI`: URI of service index on internal NuGet server.
 
-- `BUILDER_ORG_REGISTRY_PUBLISH_URI`: URI of publish endpoint on internal NuGet server.
 
-- `BUILDER_ORG_REGISTRY_SEARCH_URI`: URI of search endpoint on internal NuGet server. Used for querying packages in debug tasks.
 
-- `BUILDER_ORG_REGISTRY_API_KEY`: API token used for publishing packages to internal NuGet server.
