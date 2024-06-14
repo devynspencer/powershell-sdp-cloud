@@ -148,8 +148,8 @@ function Invoke-ServiceDeskApi {
     $InvokeRestParams = @{
         Uri = $RequestUri
         Method = $Method # TODO: Determine request method to use based on context
-        Headers = (Format-ZohoHeader -Portal $Portal)
         Verbose = $true
+        Headers = (Format-ZohoHeader)
     }
 
     # Add pagination parameters to request body (if supported for request)
