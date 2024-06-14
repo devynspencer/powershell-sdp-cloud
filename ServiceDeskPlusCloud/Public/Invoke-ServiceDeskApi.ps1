@@ -94,7 +94,14 @@ function Invoke-ServiceDeskApi {
 
         # TODO: Separate these into different parameter sets, **defaulting to Page for now**
         # Results page to start from
-        $Page = 1
+        $Page = 1,
+
+        # Field to sort results by, i.e. "created_time"
+        $SortField,
+
+        # Whether to sort in ascending or descing order
+        [ValidateSet('asc', 'desc')]
+        $SortOrder
     )
 
     # Attempt to identify if this was called recursively
@@ -167,11 +174,16 @@ function Invoke-ServiceDeskApi {
         $Body.input_data.list_info.page = $Page
         $Body.input_data.list_info.row_count = $Limit
 
-        Write-Verbose "[Invoke-ServiceDeskApi] Multiple resources requested, including pagination parameters:`n$(ConvertTo-Json $InvokeRestParams.Body)"
-    }
+        # Add sorting parameters to request body
+        if ($PSBoundParameters.ContainsKey('SortField')) {
+            $Body.input_data.list_info.sort_field = $SortField
+        }
 
-    else {
-        Write-Verbose '[Invoke-ServiceDeskApi] Not requesting multiple resources, skipping pagination'
+        if ($PSBoundParameters.ContainsKey('SortOrder')) {
+            $Body.input_data.list_info.sort_order = $SortOrder
+        }
+
+        Write-Verbose "[Invoke-ServiceDeskApi] Operation [$Operation] supports pagination! Behavior is [$PaginateAction]"
     }
 
     # Format request body, based on cryptic instructions from ManageEngine documentation
