@@ -3,8 +3,8 @@
 function Invoke-ServiceDeskApi {
     param (
         # URI to the ServiceDesk Plus cloud server, i.e. https://sdp.example.com
-        [Parameter(Mandatory)]
-        $BaseUri,
+        # [Parameter(Mandatory)]
+        $BaseUri = (Get-Secret -Vault Zoho -AsPlainText -Name 'BASE_URI'),
 
         # The HTTP method to use for the operation, based on the ServiceDesk Plus cloud API documentation.
         [ValidateSet('Get', 'Post', 'Put', 'Delete')]
