@@ -34,6 +34,7 @@ function Invoke-ServiceDeskApi {
         )]
         $Operation,
 
+        # TODO: Format resource names as plural/singular (to help identify the field name for resource data and similar)
         # The base resource type to operate on. Determines structure of request URI, as well as acceptable child resources (if applicable).
         [Parameter(Mandatory)]
         [ValidateSet(
@@ -52,6 +53,7 @@ function Invoke-ServiceDeskApi {
         [string]
         $Id,
 
+        # TODO: Format resource names as plural/singular (to help identify the field name for resource data and similar)
         # The Child resource type to operate on (of applicable). Used when adding a child resource to an existing resource. Required for any child resource operation.
         #
         # Example: adding a task to a request
@@ -107,6 +109,8 @@ function Invoke-ServiceDeskApi {
         [ValidateSet('asc', 'desc')]
         $SortOrder
     )
+
+    Write-Verbose "[Invoke-ServiceDeskApi] Preparing API request => [$Operation] on [$Resource] page [$Page]"
 
     # Attempt to identify if this was called recursively
     if ((Get-PSCallStack)[1].Command -eq $MyInvocation.MyCommand) {
@@ -199,7 +203,10 @@ function Invoke-ServiceDeskApi {
     $Response = Invoke-RestMethod @InvokeRestParams
 
     # Cache results while handling pagination
-    $Results = @($Response."$Resource")
+    # TODO: This doesn't apply when using ListChild and no child resources are found, for example the following follows the "else" and (incorrectly) returns the full response (including response_status, list_info, *and* the empty tasks array):
+    #
+    #   Invoke-ServiceDeskApi -Verbose -Method Get -Portal isservicedesk -Resource requests -BaseUri https://sdp.oya.state.or.us -Operation ListChild -Id 118870000020103167 -ChildResource tasks -Limit 2
+    # Using ContainsKey to ensure cases where no child resources exist are handled the same
 
     do {
         # Increment pagination counter and previous response for reference
@@ -208,12 +215,77 @@ function Invoke-ServiceDeskApi {
 
         Write-Verbose "[Invoke-ServiceDeskApi] More resources are available! Pagination behavior is [$PaginateAction]..."
         Write-Verbose "[Invoke-ServiceDeskApi] Continuing on page [$Page] ..."
+    # TODO: This seems more optimistic than cautious. One inconsistently named resource and it's broken
+    # i.e. api/v3/unicorn instead of api/v3/unicorns
+    # TODO: Need to factor in whether a ChildResource was specified, as in that case the response object
+    #   won't contain a property named "$Resource" (or "$SingleResource" either, as currently written),
+    #   the property should then match "$ChildResource" (or the singular resource name)
 
         # Rebuild body for next API call
         $Body = @{ input_data = @{} }
         $Body.input_data.list_info = @{}
         $Body.input_data.list_info.page = $Page
         $Body.input_data.list_info.row_count = $Limit
+    # Determine expected property name from response object, based on operation type. For example, the
+    # response to a "List" operation for "requests" should contain a "requests" property. Conversely,
+    # a response to a "ListChild" operation should contain the plural form of the child resource name.
+    #
+    # Finally, the response to a "Get" or "GetChild" operation then would be expected to contain the
+    # singular form of the parent or child resource name, respectively.
+    $ResponsePropertyName = switch ($Operation) {
+        'Get' {
+            $Resource -replace 's$' # Singular form of resource name
+        }
+        'List' {
+            $Resource # Plural form of resource name
+        }
+        'New' {
+            $Resource -replace 's$' # Singular form of resource name
+        }
+        'Update' {
+            $Resource -replace 's$' # Singular form of resource name
+        }
+        'Remove' {
+            # Assuming a Remove operation returns anything?
+            $Resource -replace 's$' # Singular form of resource name
+        }
+        'GetChild' {
+            $ChildResource -replace 's$' # Singular form of child resource name
+        }
+        'ListChild' {
+            $ChildResource # Plural form of child resource name
+        }
+        'AddChild' {
+            $ChildResource -replace 's$' # Singular form of child resource name
+        }
+        'UpdateChild' {
+            $ChildResource -replace 's$' # Singular form of child resource name
+        }
+        'RemoveChild' {
+            # Assuming a RemoveChild operation returns anything?
+            $ChildResource -replace 's$' # Singular form of child resource name
+        }
+    }
+
+    $PropertyNames = (Get-Member -MemberType NoteProperty -InputObject $Response).Name | sort
+    Write-Verbose "[Invoke-ServiceDeskApi] Expecting property [$ResponsePropertyName] in response object. Found [$($PropertyNames.Count)] properties: $($PropertyNames -join ', ')"
+
+    # Extract resource(s) from response based on expected property name
+    if ($Response."$ResponsePropertyName") {
+        # TODO: Include id of parent resource with each child resource (ParentId) -- maybe other useful properties describing the parent?
+        $Results = @($Response."$ResponsePropertyName")
+        Write-Verbose "[Invoke-ServiceDeskApi] Expected property [$ResponsePropertyName] found!"
+    }
+
+    # Handle responses that contain expected property, but property is empty
+    elseif ($Response."$ResponsePropertyName".count -eq 0) {
+        Write-Verbose "[Invoke-ServiceDeskApi] Expected property [$ResponsePropertyName] found, but contains no resource! This is likely a ListChild operation on a resource without any of that child resource."
+    }
+
+    # The response should never be empty, so if the above aren't true then something is wrong
+    else {
+        throw "Expected response object to contain [$ResponsePropertyName]:`n`n$(ConvertTo-Json $Response -Compress)`n`n$Error"
+    }
 
         # Format input data payload and add to request body
         $InvokeRestParams.Body = @{ input_data = (ConvertTo-Json $Body.input_data -Compress -Depth 4) };
