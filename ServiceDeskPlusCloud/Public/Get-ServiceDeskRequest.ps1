@@ -15,8 +15,8 @@
 function Get-ServiceDeskRequest {
     param (
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Int64]
-        $Id,
+        [string[]]
+        $Id
     )
 
     process {
@@ -24,6 +24,7 @@ function Get-ServiceDeskRequest {
             $RestMethodParameters = @{
                 Headers = Format-ZohoHeader
                 Method = 'Get'
+                Id = $RequestId
             }
 
             $Response = (Invoke-RestMethod @RestMethodParameters).request
