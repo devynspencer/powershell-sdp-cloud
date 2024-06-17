@@ -348,7 +348,6 @@ function Invoke-ServiceDeskApi {
                 Write-Verbose "[Invoke-ServiceDeskApi] Added [$($Response.Count)] resources from page $Page to results."
             }
 
-            # TODO: Why is this called Stop instead of Skip or Ignore etc?
             'Stop' {
                 Write-Verbose '[Invoke-ServiceDeskApi] More resources are available, but will be skipped due to PaginateAction.'
                 break
