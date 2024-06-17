@@ -4,9 +4,6 @@
 .SYNOPSIS
     Create a new ServiceDesk Plus request.
 
-.PARAMETER Portal
-    The portal for the ServiceDesk Plus Cloud instance.
-
 .PARAMETER Subject
     The subject of the request.
 
@@ -41,15 +38,12 @@
     The impact of the request.
 
 .EXAMPLE
-    New-ServiceDeskRequest -Portal portalname -Subject "Perform action x on y server"
+    New-ServiceDeskRequest -Subject "Perform action x on y server"
     Create a new request with a specific subject.
 #>
 
 function New-ServiceDeskRequest {
     param (
-        [Parameter(Mandatory)]
-        $Portal,
-
         [Parameter(Mandatory)]
         [ValidateNotNull()]
         $Subject,
