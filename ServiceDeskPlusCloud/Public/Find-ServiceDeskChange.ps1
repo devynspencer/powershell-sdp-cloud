@@ -6,6 +6,10 @@ function Find-ServiceDeskChange {
         [string[]]
         $Owner,
 
+        # Change stage to filter results by.
+        [string[]]
+        $Stage,
+
         # Maximum number of requests to return. Value passed to the row_count property of the
         # list_info object passed to the API
         $Limit = 100,
@@ -36,6 +40,21 @@ function Find-ServiceDeskChange {
         }
 
         $ApiParams.SearchCriteria += $OwnerCriteria
+    }
+
+    if ($PSBoundParameters.ContainsKey('Stage')) {
+        $StageCriteria = @{
+            field = 'stage.name'
+            condition = 'is'
+            values = @($Stage)
+        }
+
+        # Format additional search criteria after the first to be ANDed together
+        if ($ApiParams.SearchCriteria.Count -gt 0) {
+            $StageCriteria.logical_operator = 'and'
+        }
+
+        $ApiParams.SearchCriteria += $StageCriteria
     }
 
     # Remove unused search criteria to avoid API errors
