@@ -77,6 +77,7 @@ function New-ServiceDeskRequest {
         $Impact
     )
 
+    # Build the request data
     $Data = @{
         request = @{
             subject = $Subject
@@ -92,6 +93,7 @@ function New-ServiceDeskRequest {
         }
     }
 
+    # Add optional parameters to the request data
     if ($Subject) {
         $Data.request.subject = $Subject
     }
