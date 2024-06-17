@@ -2,7 +2,7 @@
 
 <#
 .SYNOPSIS
-    Add a note to a ServiceDesk Plus request.
+    Add a note to a ServiceDesk Plus resource.
 
 .PARAMETER Portal
     The portal for the ServiceDesk Plus Cloud instance.
