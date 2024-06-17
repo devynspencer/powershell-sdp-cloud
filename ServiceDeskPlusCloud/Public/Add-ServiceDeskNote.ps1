@@ -34,6 +34,19 @@ function Add-ServiceDeskNote {
         [ValidateNotNullOrEmpty()]
         $Message,
 
+        [Parameter(Mandatory)]
+        [ValidateSet(
+            'requests',
+            'problems',
+            'assets',
+            'projects',
+            'changes',
+            'tasks',
+            'solutions',
+            'topics'
+        )]
+        $Resource,
+
         [switch]
         $Notify,
 
@@ -43,6 +56,7 @@ function Add-ServiceDeskNote {
     )
 
     begin {
+        # Build shared API parameters
         $Data = @{
             request_note = @{
                 description = $Message
@@ -59,35 +73,24 @@ function Add-ServiceDeskNote {
         if ($Public) {
             $Data.request_note.show_to_requester = $true
         }
-
-        $Body = @{
-            input_data = ($Data | ConvertTo-Json -Depth 4 -Compress)
-        }
     }
 
     process {
         foreach ($RequestId in $Id) {
-            $RestMethodParameters = @{
-                Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests/$RequestId/notes"
-                Headers = Format-ZohoHeader
+            # Build the API parameters
+            $InvokeParams = @{
                 Method = 'Post'
-                Body = $Body
+                Operation = 'AddChild'
+                ChildResource = 'notes'
+                Resource = $Resource
+                Id = $RequestId
+                Data = $Data
             }
 
-            $Response = (Invoke-RestMethod @RestMethodParameters).request_note
+            # Invoke the API and return the response
+            $Response = Invoke-ServiceDeskApi @InvokeParams
 
-            $Note = [ordered] @{
-                Id = $Response.id
-                Creator = $Response.created_by.email_id
-                CreatedTime = $Response.created_time.display_value
-                RequestId = $Response.request.id
-                RequestSubject = $Response.request.subject
-                RequestDisplayId = $Response.request.display_id
-                Message = $Response.description
-                Public = $Response.show_to_requester
-            }
-
-            [pscustomobject] $Note
+            $Response
         }
     }
 }
