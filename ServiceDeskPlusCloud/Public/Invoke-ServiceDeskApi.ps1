@@ -118,11 +118,15 @@ function Invoke-ServiceDeskApi {
 
     Write-Verbose "[Invoke-ServiceDeskApi] Preparing API request => [$Operation] on [$Resource] page [$Page]"
 
+    # TODO: Is this weird to hard-code here? Seems like a decent way to identify recursive calls to the function
+    # TODO: Alternatively, we could add a switch statement to flag it as called from within itself
+    # TODO: If the above checks out (and we can reliably determine if it's the parent request or a child request called during pagination) we could frontload verbose output for this execution only (stuff that doesn't change, like $PaginateAction)
     # Attempt to identify if this was called recursively
     if ((Get-PSCallStack)[1].Command -eq $MyInvocation.MyCommand) {
         Write-Warning 'Function has same name as calling function. Likely recursive.'
     }
 
+    # TODO: Refactor this to be more comprehensive (other API version, schemes etc.)
     # Strip protocol/scheme prefix from BaseUri to ensure RequestUri doesn't end up with "https://https://sdp.example.com" or similar.
     $BaseUri = $BaseUri -replace 'https://' -replace '/api/v3/'
 
@@ -282,6 +286,7 @@ function Invoke-ServiceDeskApi {
         Export-ServiceDeskResponse @ExportParams -Verbose
     }
 
+    # Determine if the expected property exists in the response object
     $PropertyNames = (Get-Member -MemberType NoteProperty -InputObject $Response).Name | sort
     Write-Verbose "[Invoke-ServiceDeskApi] Expecting property [$ResponsePropertyName] in response object. Found [$($PropertyNames.Count)] properties: $($PropertyNames -join ', ')"
 
