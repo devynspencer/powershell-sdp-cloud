@@ -2,6 +2,10 @@
 
 function Find-ServiceDeskChange {
     param (
+        # Change owner to filter results by.
+        [string[]]
+        $Owner,
+
         # Maximum number of requests to return. Value passed to the row_count property of the
         # list_info object passed to the API
         $Limit = 100,
@@ -16,6 +20,22 @@ function Find-ServiceDeskChange {
         Page = $Page
         Operation = 'List'
         SearchCriteria = @()
+    }
+
+    # Add search criteria to the API parameters
+    if ($PSBoundParameters.ContainsKey('Owner')) {
+        $OwnerCriteria = @{
+            field = 'change_owner.email_id'
+            condition = 'is'
+            values = @($Owner)
+        }
+
+        # Format additional search criteria after the first to be ANDed together
+        if ($ApiParams.SearchCriteria.Count -gt 0) {
+            $OwnerCriteria.logical_operator = 'and'
+        }
+
+        $ApiParams.SearchCriteria += $OwnerCriteria
     }
 
     # Remove unused search criteria to avoid API errors
