@@ -17,6 +17,9 @@ function Invoke-ServiceDeskApi {
         # Additional parameters for the request. Examples: mesage body of a note to add, details of a new change request
         $Data,
 
+        # Additional filter criteria to specify under the list_info object in the input_data property of the request body.
+        $SearchCriteria = @{},
+
         # The API operation to perform. Determines structure of request URI, as well as required parameters.
         [Parameter(Mandatory)]
         [ValidateSet(
@@ -197,6 +200,11 @@ function Invoke-ServiceDeskApi {
         }
 
         Write-Verbose "[Invoke-ServiceDeskApi] Operation [$Operation] supports pagination! Behavior is [$PaginateAction]"
+
+        # Add search criteria to request body, if specified
+        if ($PSBoundParameters.ContainsKey('SearchCriteria')) {
+            $Body.input_data.list_info.search_criteria = $SearchCriteria
+        }
     }
 
     # Format request body, based on cryptic instructions from ManageEngine documentation
