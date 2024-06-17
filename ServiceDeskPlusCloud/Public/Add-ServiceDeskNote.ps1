@@ -4,11 +4,8 @@
 .SYNOPSIS
     Add a note to a ServiceDesk Plus resource.
 
-.PARAMETER Portal
-    The portal for the ServiceDesk Plus Cloud instance.
-
 .PARAMETER Id
-    The id of the ServiceDesk Plus request.
+    The id of the ServiceDesk Plus resource.
 
 .PARAMETER Message
     The message to include in the note.
@@ -16,9 +13,11 @@
 .PARAMETER Notify
     Which contacts to notify of the added note.
 
+.PARAMETER Resource
+    The type of resource to add the note to.
 
 .EXAMPLE
-    Add-ServiceDeskNote -Portal portalname -Id 123456 -Message "Encountered problem x."
+    Add-ServiceDeskNote -Id 123456 -Message "Encountered problem x." -Resource requests
     Add a note to request 123456 in the specified ServiceDesk Plus Cloud instance.
 #>
 
