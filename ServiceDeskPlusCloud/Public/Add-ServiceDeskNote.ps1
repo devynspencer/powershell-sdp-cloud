@@ -27,11 +27,8 @@
 function Add-ServiceDeskNote {
     param (
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
-        [Int64]
+        [string[]]
         $Id,
-
-        [Parameter(Mandatory)]
-        $Portal,
 
         [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
@@ -40,8 +37,9 @@ function Add-ServiceDeskNote {
         [switch]
         $Notify,
 
-        [bool]
-        $Public = $true
+        # Notify the requester.
+        [switch]
+        $Public
     )
 
     begin {
