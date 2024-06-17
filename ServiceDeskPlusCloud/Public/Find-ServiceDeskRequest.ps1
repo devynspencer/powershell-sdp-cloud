@@ -1,5 +1,5 @@
 . "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
-. "$PSScriptRoot\..\private\Invoke-ServiceDeskApi.ps1"
+. "$PSScriptRoot\Invoke-ServiceDeskApi.ps1"
 
 <#
 .SYNOPSIS
@@ -24,9 +24,6 @@
 
 function Find-ServiceDeskRequest {
     param (
-        [Parameter(Mandatory)]
-        $Portal,
-
         [ValidateNotNull()]
         [string[]]
         $Status = 'Open',
@@ -47,7 +44,6 @@ function Find-ServiceDeskRequest {
     )
 
     $ApiParams = @{
-        Portal = $Portal
         Resource = 'requests'
         Limit = $Limit
         Page = $Page
