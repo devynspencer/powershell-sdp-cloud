@@ -15,6 +15,12 @@ function Find-ServiceDeskChange {
         Limit = $Limit
         Page = $Page
         Operation = 'List'
+        SearchCriteria = @()
+    }
+
+    # Remove unused search criteria to avoid API errors
+    if ($ApiParams.SearchCriteria.Count -eq 0) {
+        $ApiParams.Remove('SearchCriteria')
     }
 
     # Invoke the API and return the response
