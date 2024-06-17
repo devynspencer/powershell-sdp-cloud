@@ -283,7 +283,7 @@ function Invoke-ServiceDeskApi {
             Format = 'CliXML'
         }
 
-        Export-ServiceDeskResponse @ExportParams -Verbose
+        Export-ServiceDeskResponse @ExportParams
     }
 
     # Determine if the expected property exists in the response object
