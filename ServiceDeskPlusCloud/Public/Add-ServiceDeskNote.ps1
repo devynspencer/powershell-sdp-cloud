@@ -1,4 +1,4 @@
-. "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
+. "$PSScriptRoot\..\Invoke-ServiceDeskApi.ps1"
 
 <#
 .SYNOPSIS
