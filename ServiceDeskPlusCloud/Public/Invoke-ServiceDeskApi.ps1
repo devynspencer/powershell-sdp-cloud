@@ -1,4 +1,5 @@
 . "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
+. "$PSScriptRoot\Export-ServiceDeskResponse.ps1"
 
 function Invoke-ServiceDeskApi {
     param (
@@ -67,6 +68,10 @@ function Invoke-ServiceDeskApi {
         #
         [string]
         $ChildId,
+
+        # Whether to save the response to a file
+        [switch]
+        $Save,
 
         # Behavior to use when response indicates that more records are available,
         # i.e. { "list_info": { "has_more_rows": true, ... } }
@@ -255,6 +260,18 @@ function Invoke-ServiceDeskApi {
             # Assuming a RemoveChild operation returns anything?
             $ChildResource -replace 's$' # Singular form of child resource name
         }
+    }
+
+    # Save the response to a file, if requested
+    if ($Save) {
+        $ExportParams = @{
+            Response = $Response
+            Description = "Response from [$Operation] on [$Resource]"
+            ResourceType = $ResponsePropertyName
+            Format = 'CliXML'
+        }
+
+        Export-ServiceDeskResponse @ExportParams -Verbose
     }
 
     $PropertyNames = (Get-Member -MemberType NoteProperty -InputObject $Response).Name | sort
