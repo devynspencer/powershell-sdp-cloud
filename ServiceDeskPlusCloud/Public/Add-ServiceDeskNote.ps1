@@ -14,10 +14,8 @@
     The message to include in the note.
 
 .PARAMETER Notify
-    Notify the requester of the added note.
+    Which contacts to notify of the added note.
 
-.PARAMETER Public
-    Display the note to all users and the requester.
 
 .EXAMPLE
     Add-ServiceDeskNote -Portal portalname -Id 123456 -Message "Encountered problem x."
@@ -47,12 +45,9 @@ function Add-ServiceDeskNote {
         )]
         $Resource,
 
-        [switch]
-        $Notify,
-
-        # Notify the requester.
-        [switch]
-        $Public
+        [ValidateSet('Technician', 'Requester')]
+        [string[]]
+        $Notify = @()
     )
 
     begin {
@@ -65,12 +60,12 @@ function Add-ServiceDeskNote {
             }
         }
 
-        # Coddle switch parameters until they function as designed
-        if ($Notify) {
+        # Update notification settins for the note
+        if ($Notify -contains 'Technician') {
             $Data.request_note.notify_technician = $true
         }
 
-        if ($Public) {
+        if ($Notify -contains 'Requester') {
             $Data.request_note.show_to_requester = $true
         }
     }
