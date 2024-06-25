@@ -2,8 +2,10 @@
 . "$PSScriptRoot\Export-ServiceDeskResponse.ps1"
 
 function Invoke-ServiceDeskApi {
+    [CmdletBinding(DefaultParameterSetName = 'ByResource')]
     param (
         # URI to the ServiceDesk Plus cloud server, i.e. https://sdp.example.com
+        [Parameter(ParameterSetName = 'ByResource')]
         $BaseUri = (Get-Secret -Vault Zoho -AsPlainText -Name 'BASE_URI'),
 
         # The HTTP method to use for the operation, based on the ServiceDesk Plus cloud API documentation.
@@ -11,6 +13,7 @@ function Invoke-ServiceDeskApi {
         $Method = 'Get',
 
         # The ServiceDesk Plus cloud portal name for the request.
+        [Parameter(ParameterSetName = 'ByResource')]
         [ValidateNotNullOrEmpty()]
         $Portal = (Get-Secret -Vault Zoho -AsPlainText -Name 'PORTAL_NAME'),
 
@@ -38,7 +41,7 @@ function Invoke-ServiceDeskApi {
 
         # TODO: Format resource names as plural/singular (to help identify the field name for resource data and similar)
         # The base resource type to operate on. Determines structure of request URI, as well as acceptable child resources (if applicable).
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory, ParameterSetName = 'ByResource')]
         [ValidateSet(
             'requests',
             'problems',
@@ -52,6 +55,7 @@ function Invoke-ServiceDeskApi {
         $Resource,
 
         # The Id of an existing resource to operate on (if applicable). Required for operations on a specific resource, i.e. Get/Update/Remove, as well as any child resource operation.
+        [Parameter(ParameterSetName = 'ByResource')]
         [string]
         $Id,
 
@@ -61,6 +65,7 @@ function Invoke-ServiceDeskApi {
         # Example: adding a task to a request
         #   api/v3/requests/{request_id}/tasks
         #
+        [Parameter(ParameterSetName = 'ByResource')]
         [ValidateSet('tasks', 'notes', 'worklogs', 'approvals', 'relations')]
         $ChildResource,
 
@@ -69,6 +74,7 @@ function Invoke-ServiceDeskApi {
         # Example: Edit a task attached to a request
         #   api/v3/requests/{request_id}/tasks/{task_id}
         #
+        [Parameter(ParameterSetName = 'ByResource')]
         [string]
         $ChildId,
 
