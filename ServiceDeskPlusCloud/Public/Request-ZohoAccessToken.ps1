@@ -17,6 +17,24 @@ function Request-ZohoAccessToken {
         [Parameter(Mandatory, ParameterSetName = 'FromFile')]
         $FilePath,
 
+        # Scope of the access token. Determines the permissions of the token.
+        [ValidateSet(
+            'SDPOnDemand.requests.ALL',
+            'SDPOnDemand.problems.ALL',
+            'SDPOnDemand.changes.ALL',
+            'SDPOnDemand.projects.ALL',
+            'SDPOnDemand.releases.ALL',
+            'SDPOnDemand.assets.ALL',
+            'SDPOnDemand.cmdb.ALL',
+            'SDPOnDemand.contracts.ALL',
+            'SDPOnDemand.purchases.ALL',
+            'SDPOnDemand.custommodule.ALL',
+            'SDPOnDemand.solutions.ALL',
+            'SDPOnDemand.setup.ALL',
+            'SDPOnDemand.general.ALL'
+        )]
+        $Scope,
+
         # Do not save auth tokens from response in secret store
         [switch]
         $NoSave,
@@ -69,6 +87,10 @@ function Request-ZohoAccessToken {
         }
     }
 
+    # Add scope to request, if provided
+    if ($PSBoundParameters.ContainsKey('Scope')) {
+        $Body.scope = $Scope -join ','
+    }
 
     # Execute request
     $RestMethodParameters = @{
