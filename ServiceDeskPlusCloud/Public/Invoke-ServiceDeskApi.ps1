@@ -56,7 +56,8 @@ function Invoke-ServiceDeskApi {
             'changes',
             'tasks',
             'solutions',
-            'topics'
+            'topics',
+            'tasks' # Standalone task resource, different from child tasks
         )]
         $Resource,
 
