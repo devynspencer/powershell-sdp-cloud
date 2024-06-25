@@ -1,173 +1,66 @@
 BeforeAll {
-    $ModuleRoot = (Get-Item $PSScriptRoot).Parent.FullName
-    $SubjectFileName = Split-Path -Path $PSCommandPath.Replace('.tests.ps1', '.ps1') -Leaf
-    . "$ModuleRoot\Public\$SubjectFileName"
+    Remove-Module ServiceDeskPlusCloud -Force
+    Import-Module "$PSScriptRoot\..\ServiceDeskPlusCloud\ServiceDeskPlusCloud.psd1" -Force
+
+    . "$PSScriptRoot\..\ServiceDeskPlusCloud\Private\Resolve-ServiceDeskUri.ps1"
 }
 
 Describe 'Resolve-ServiceDeskUri' {
-    Context 'for any uri' {
-        It 'skips uris without an id' {
-            $Uri = 'https://sdp.example.com/app/is/ui/requests'
-            Resolve-ServiceDeskUri -Uri $Uri | Should -Be $null
-        }
 
-        It 'skips unrelated uris' {
-            $Uri = 'https://google.com'
-            Resolve-ServiceDeskUri -Uri $Uri | Should -Be $null
-        }
+    Context 'when the URI has 1 component' {
 
-        It 'returns results from pipeline input' {
-            $Uri = 'https://sdp.example.com/app/is/ui/requests/118870000007832062/details'
-            $Uri | Resolve-ServiceDeskUri | Should -Not -Be $null
+        It 'Should return a resource with no id' {
+            $Uri = [System.Uri] 'https://sdp.example.com/api/v3/changes'
+
+            $Result = Resolve-ServiceDeskUri -Uri $Uri
+            $Result.Resource | Should -Be 'changes'
+            $Result.Id | Should -BeNullOrEmpty
         }
     }
 
-    Context 'for multiple uris' {
-        It 'returns results for each uri' {
-            $Uris = @(
-                'https://sdp.example.com/app/is/ui/requests/118870000007832126/details'
-                'https://sdp.example.com/app/is/ui/requests/118870000007812729/details'
-                'https://sdp.example.com/app/is/ui/requests/118870000007832062/details'
-            )
-            $Results = Resolve-ServiceDeskUri -Uri $Uris
-            $Results.Count | Should -Be 3
-        }
+    Context 'when the URI has 2 components' {
 
-        It 'returns results from pipeline input' {
-            $Uris = @(
-                'https://sdp.example.com/app/is/ui/requests/118870000007832126/details'
-                'https://sdp.example.com/app/is/ui/requests/118870000007812729/details'
-                'https://sdp.example.com/app/is/ui/requests/118870000007832062/details'
-            )
-            ($Uris | Resolve-ServiceDeskUri).Count | Should -Be 3
+        It 'Should return a resource with an id' {
+            $Uri = [System.Uri] 'https://sdp.example.com/api/v3/changes/123456'
+
+            $Result = Resolve-ServiceDeskUri -Uri $Uri
+            $Result.Resource | Should -Be 'changes'
+            $Result.Id | Should -Be '123456'
         }
     }
 
-    Context 'given a request uri' {
-        It 'returns the correct resource id' {
-            $Uri = 'https://sdp.example.com/app/is/ui/requests/118870000007832126/details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Id | Should -Be '118870000007832126'
-        }
+    Context 'when the URI has 3 components' {
 
-        It 'returns a resource id with a valid length' {
-            $Uri = 'https://sdp.example.com/app/is/ui/requests/118870000007832126/details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Id.Length | Should -Be 18
-        }
+        It 'Should return a resource with an id and a child resource with no id' {
+            $Uri = [System.Uri] 'https://sdp.example.com/api/v3/changes/123456/tasks'
 
-        It 'returns the correct resource type' {
-            $Uri = 'https://sdp.example.com/app/is/ui/requests/118870000007832126/details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.ResourceType | Should -Be 'request'
-        }
-
-        It 'returns the correct site' {
-            $Uri = 'https://sdp.example.com/app/is/ui/requests/118870000007832126/details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Site | Should -Be 'sdp.example.com'
-        }
-
-        It 'returns the correct portal' {
-            $Uri = 'https://sdp.example.com/app/is/ui/requests/118870000007832126/details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Portal | Should -Be 'is'
+            $Result = Resolve-ServiceDeskUri -Uri $Uri
+            $Result.Resource | Should -Be 'changes'
+            $Result.Id | Should -Be '123456'
+            $Result.ChildResource | Should -Be 'tasks'
+            $Result.ChildId | Should -BeNullOrEmpty
         }
     }
 
-    Context 'given a change uri' {
-        It 'returns the correct resource id' {
-            $Uri = 'https://sdp.example.com/app/is/ChangeDetails.cc?CHANGEID=118870000005973815&selectTab=submission&subTab=details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Id | Should -Be '118870000005973815'
-        }
+    Context 'when the URI has 4 components' {
 
-        It 'returns a resource id with a valid length' {
-            $Uri = 'https://sdp.example.com/app/is/ChangeDetails.cc?CHANGEID=118870000005973815&selectTab=submission&subTab=details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Id.Length | Should -Be 18
-        }
+        It 'Should return a resource with an id and a child resource with an id' {
+            $Uri = [System.Uri] 'https://sdp.example.com/api/v3/changes/123456/tasks/654321'
 
-        It 'returns the correct resource type' {
-            $Uri = 'https://sdp.example.com/app/is/ChangeDetails.cc?CHANGEID=118870000005973815&selectTab=submission&subTab=details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.ResourceType | Should -Be 'change'
-        }
-
-        It 'returns the correct site' {
-            $Uri = 'https://sdp.example.com/app/is/ChangeDetails.cc?CHANGEID=118870000005973815&selectTab=submission&subTab=details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Site | Should -Be 'sdp.example.com'
-        }
-
-        It 'returns the correct portal' {
-            $Uri = 'https://sdp.example.com/app/is/ChangeDetails.cc?CHANGEID=118870000005973815&selectTab=submission&subTab=details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Portal | Should -Be 'is'
+            $Result = Resolve-ServiceDeskUri -Uri $Uri
+            $Result.Resource | Should -Be 'changes'
+            $Result.Id | Should -Be '123456'
+            $Result.ChildResource | Should -Be 'tasks'
+            $Result.ChildId | Should -Be '654321'
         }
     }
 
-    Context 'given a project uri' {
-        It 'returns the correct resource id' {
-            $Uri = 'https://sdp.example.com/app/is/ProjectDetailsCheck.do?fromListView=true&PROJECTID=118870000006706085'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Id | Should -Be '118870000006706085'
-        }
+    Context 'when the URI is invalid' {
 
-        It 'returns a resource id with a valid length' {
-            $Uri = 'https://sdp.example.com/app/is/ProjectDetailsCheck.do?fromListView=true&PROJECTID=118870000006706085'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Id.Length | Should -Be 18
-        }
+        It 'Should throw an error' {
+            $Uri = [System.Uri] 'https://sdp.example.com/api/v3/invalid'
 
-        It 'returns the correct resource type' {
-            $Uri = 'https://sdp.example.com/app/is/ProjectDetailsCheck.do?fromListView=true&PROJECTID=118870000006706085'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.ResourceType | Should -Be 'project'
-        }
-
-        It 'returns the correct site' {
-            $Uri = 'https://sdp.example.com/app/is/ProjectDetailsCheck.do?fromListView=true&PROJECTID=118870000006706085'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Site | Should -Be 'sdp.example.com'
-        }
-
-        It 'returns the correct portal' {
-            $Uri = 'https://sdp.example.com/app/is/ProjectDetailsCheck.do?fromListView=true&PROJECTID=118870000006706085'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Portal | Should -Be 'is'
-        }
-    }
-
-    Context 'given a problem uri' {
-        It 'returns the correct resource id' {
-            $Uri = 'https://sdp.example.com/app/is/ui/problems/118870000007936288/details?selectTab=details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Id | Should -Be '118870000007936288'
-        }
-
-        It 'returns a resource id with a valid length' {
-            $Uri = 'https://sdp.example.com/app/is/ui/problems/118870000007936288/details?selectTab=details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Id.Length | Should -Be 18
-        }
-
-        It 'returns the correct resource type' {
-            $Uri = 'https://sdp.example.com/app/is/ui/problems/118870000007936288/details?selectTab=details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.ResourceType | Should -Be 'problem'
-        }
-
-        It 'returns the correct site' {
-            $Uri = 'https://sdp.example.com/app/is/ui/problems/118870000007936288/details?selectTab=details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Site | Should -Be 'sdp.example.com'
-        }
-
-        It 'returns the correct portal' {
-            $Uri = 'https://sdp.example.com/app/is/ui/problems/118870000007936288/details?selectTab=details'
-            $Results = Resolve-ServiceDeskUri -Uri $Uri
-            $Results.Portal | Should -Be 'is'
+            { Resolve-ServiceDeskUri -Uri $Uri } | Should -Throw "Invalid URI: $Uri"
         }
     }
 }
