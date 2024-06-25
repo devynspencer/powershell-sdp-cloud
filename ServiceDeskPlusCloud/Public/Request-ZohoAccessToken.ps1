@@ -69,8 +69,6 @@ function Request-ZohoAccessToken {
         }
     }
 
-    # Record next expiration time
-    $script:ZohoAccessExpirationTime = (Get-Date).AddHours(1)
 
     # Execute request
     $RestMethodParameters = @{
@@ -91,6 +89,11 @@ function Request-ZohoAccessToken {
 
         Write-Verbose '[Request-ZohoAccessToken] Access token retrieved and stored in secret store.'
     }
+
+    # Calculate expiration time
+    $ExpirationTime = (Get-Date).AddSeconds($Response.expires_in)
+
+    Write-Verbose "[Request-ZohoAccessToken] Token expires in [$($Response.expires_in)] seconds, at [$ExpirationTime]"
 
     # Format output
     if ($PassThru) {
