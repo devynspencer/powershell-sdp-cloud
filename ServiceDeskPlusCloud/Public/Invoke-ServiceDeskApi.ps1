@@ -1,4 +1,4 @@
-. "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
+. "$PSScriptRoot\..\Private\Format-ZohoHeader.ps1"
 . "$PSScriptRoot\Export-ServiceDeskResponse.ps1"
 
 function Invoke-ServiceDeskApi {
