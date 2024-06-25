@@ -26,13 +26,14 @@ function Request-ZohoAccessToken {
         $PassThru
     )
 
-    # Retrieve secrets
+    # Define shared parameters for secret store
     $SecretParams = @{
         AsPlainText = $true
         Vault = 'Zoho'
         ErrorAction = 'Stop'
     }
 
+    # Retrieve secrets from secret store if not provided
     if (!$PSBoundParameters.ContainsKey('RefreshToken')) {
         $RefreshToken = Get-Secret @SecretParams -Name 'REFRESH_TOKEN'
     }
@@ -80,12 +81,15 @@ function Request-ZohoAccessToken {
 
     $Response = Invoke-RestMethod @RestMethodParameters
 
-    # Handle response
-
     # Store secrets from response
     if (!$NoSave) {
+        # Reuse most of the secret store parameters
         $SecretParams.Remove('AsPlainText')
+
+        # Update secret store with new access token
         Set-Secret @SecretParams -Name 'ACCESS_TOKEN' -Secret $Response.access_token
+
+        Write-Verbose '[Request-ZohoAccessToken] Access token retrieved and stored in secret store.'
     }
 
     # Format output
