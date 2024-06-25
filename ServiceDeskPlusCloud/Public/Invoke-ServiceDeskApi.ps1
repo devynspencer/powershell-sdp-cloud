@@ -1,9 +1,15 @@
 . "$PSScriptRoot\..\Private\Format-ZohoHeader.ps1"
+. "$PSScriptRoot\..\Private\Resolve-ServiceDeskUri.ps1"
 . "$PSScriptRoot\Export-ServiceDeskResponse.ps1"
 
 function Invoke-ServiceDeskApi {
     [CmdletBinding(DefaultParameterSetName = 'ByResource')]
     param (
+        # The full URI to the resource to operate on. This parameter is mutually exclusive with
+        # BaseUri, Portal, Id, Resource, ResourceId, ChildResource, and ChildId.
+        [Parameter(Mandatory, ParameterSetName = 'ByUri')]
+        $Uri,
+
         # URI to the ServiceDesk Plus cloud server, i.e. https://sdp.example.com
         [Parameter(ParameterSetName = 'ByResource')]
         $BaseUri = (Get-Secret -Vault Zoho -AsPlainText -Name 'BASE_URI'),
@@ -132,28 +138,52 @@ function Invoke-ServiceDeskApi {
         Write-Warning 'Function has same name as calling function. Likely recursive.'
     }
 
-    # TODO: Refactor this to be more comprehensive (other API version, schemes etc.)
-    # Strip protocol/scheme prefix from BaseUri to ensure RequestUri doesn't end up with "https://https://sdp.example.com" or similar.
-    $BaseUri = $BaseUri -replace 'https://' -replace '/api/v3/'
+    # Resolve resource and child resource based on provided URI
+    if ($PSBoundParameters.ContainsKey('Uri')) {
+        $RequestUri = $Uri
+        $Components = Resolve-ServiceDeskUri -Uri $RequestUri
 
-    # Construct request URI based on the provided parameters
-    # Note: $Portal is no longer used apparently
-    $RequestUri = "https://$BaseUri/api/v3/$Resource"
+        # Identify resource and child resource based on resolved components
+        $Resource = $Components.Resource
 
-    Write-Verbose "[Invoke-ServiceDeskApi] Base URI: $BaseUri"
+        if ($Components.Id) {
+            $Id = $Components.Id
+        }
 
-    if ($PSBoundParameters.ContainsKey('Id')) {
-        $RequestUri += "/$Id"
+        if ($Components.ChildResource) {
+            $ChildResource = $Components.ChildResource
+        }
+
+        if ($Components.ChildId) {
+            $ChildId = $Components.ChildId
+        }
     }
 
-    Write-Verbose "[Invoke-ServiceDeskApi] Request URI: $RequestUri"
+    # Otherwise, build the request URI based on the provided parameters
+    else {
+        # TODO: Refactor this to be more comprehensive (other API version, schemes etc.)
+        # Strip protocol/scheme prefix from BaseUri to ensure RequestUri doesn't end up with "https://https://sdp.example.com" or similar.
+        $BaseUri = $BaseUri -replace 'https://' -replace '/api/v3/'
 
-    if ($PSBoundParameters.ContainsKey('ChildResource')) {
-        $RequestUri += "/$ChildResource"
-    }
+        # Construct request URI based on the provided parameters
+        # Note: $Portal is no longer used apparently
+        $RequestUri = "https://$BaseUri/api/v3/$Resource"
 
-    if ($PSBoundParameters.ContainsKey('ChildId')) {
-        $RequestUri += "/$ChildId"
+        Write-Verbose "[Invoke-ServiceDeskApi] Base URI: $BaseUri"
+
+        if ($PSBoundParameters.ContainsKey('Id')) {
+            $RequestUri += "/$Id"
+        }
+
+        Write-Verbose "[Invoke-ServiceDeskApi] Request URI: $RequestUri"
+
+        if ($PSBoundParameters.ContainsKey('ChildResource')) {
+            $RequestUri += "/$ChildResource"
+        }
+
+        if ($PSBoundParameters.ContainsKey('ChildId')) {
+            $RequestUri += "/$ChildId"
+        }
     }
 
     Write-Verbose "[Invoke-ServiceDeskApi] Request URI after appending child resource path: $RequestUri"
