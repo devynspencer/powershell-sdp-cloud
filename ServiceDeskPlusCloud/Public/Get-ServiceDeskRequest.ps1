@@ -1,4 +1,3 @@
-. "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
 . "$PSScriptRoot\Invoke-ServiceDeskApi.ps1"
 
 <#
@@ -27,7 +26,6 @@ function Get-ServiceDeskRequest {
                 Operation = 'Get'
                 Resource = 'requests'
                 Id = $RequestId
-                Verbose = $true
             }
 
             $Response = Invoke-ServiceDeskApi @RestMethodParameters
