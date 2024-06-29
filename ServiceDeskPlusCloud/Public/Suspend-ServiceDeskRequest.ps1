@@ -1,9 +1,8 @@
 . "$PSScriptRoot\..\Private\ConvertTo-UnixTimestamp.ps1"
 . "$PSScriptRoot\Invoke-ServiceDeskApi.ps1"
 
-# TODO: Add parameter set for setting a status when scheduling a resume time (Message unused otherwise)
-
 function Suspend-ServiceDeskRequest {
+    [CmdletBinding(DefaultParameterSetName = 'ResumeScheduled')]
     param (
         # Id of the request to suspend
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
@@ -11,6 +10,7 @@ function Suspend-ServiceDeskRequest {
         $Id,
 
         # Date and time to resume the request
+        [Parameter(Mandatory, ParameterSetName = 'ResumeScheduled')]
         [datetime]
         $Until,
 
@@ -18,9 +18,11 @@ function Suspend-ServiceDeskRequest {
         $SuspendStatus = 'Onhold',
 
         # Status to set when the request is resumed
+        [Parameter(ParameterSetName = 'ResumeScheduled')]
         $ResumeStatus = 'Open',
 
         # Message describing why the request is suspended
+        [Parameter(Mandatory, ParameterSetName = 'ResumeScheduled')]
         $Message
     )
 
