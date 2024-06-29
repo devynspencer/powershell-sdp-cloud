@@ -16,6 +16,9 @@
 .PARAMETER Resource
     The type of resource to add the note to.
 
+.PARAMETER Notify
+    Which contacts to notify of the added note. Only applicable to request notes.
+
 .EXAMPLE
     Add-ServiceDeskNote -Id 123456 -Message "Encountered problem x." -Resource requests
     Add a note to request 123456 in the specified ServiceDesk Plus Cloud instance.
