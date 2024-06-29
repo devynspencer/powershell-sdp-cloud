@@ -103,38 +103,31 @@ function New-ServiceDeskRequest {
     }
 
     if ($Group) {
-        $Data.request.group = @{}
-        $Data.request.group.name = $Group
+        $Data.request.group = @{ name = $Group }
     }
 
     if ($Technician) {
-        $Data.request.technician = @{}
-        $Data.request.technician.email_id = $Technician
+        $Data.request.technician = @{ email_id = $Technician }
     }
 
     if ($SubCategory) {
-        $Data.request.subcategory = @{}
-        $Data.request.subcategory.name = $SubCategory
+        $Data.request.subcategory = @{ name = $SubCategory }
     }
 
     if ($SubCategoryItem) {
-        $Data.request.item = @{}
-        $Data.request.item.name = $SubCategoryItem
+        $Data.request.item = @{ name = $SubCategoryItem }
     }
 
     if ($Site) {
-        $Data.request.site = @{}
-        $Data.request.site.name = $Site
+        $Data.request.site = @{ name = $Site }
     }
 
     if ($Priority) {
-        $Data.request.priority = @{}
-        $Data.request.priority.name = $Priority
+        $Data.request.priority = @{ name = $Priority }
     }
 
     if ($Impact) {
-        $Data.request.impact = @{}
-        $Data.request.impact.name = $Impact
+        $Data.request.impact = @{ name = $Impact }
     }
 
     # Build the API parameters
