@@ -57,58 +57,47 @@ function Set-ServiceDeskRequest {
         }
 
         if ($Status) {
-            $Data.request.status = @{}
-            $Data.request.status.name = $Status
+            $Data.request.status = @{ name = $Status }
         }
 
         if ($Requester) {
-            $Data.request.requester = @{}
-            $Data.request.requester.email_id = $Requester
+            $Data.request.requester = @{ email_id = $Requester }
         }
 
         if ($Group) {
-            $Data.request.group = @{}
-            $Data.request.group.name = $Group
+            $Data.request.group = @{ name = $Group }
         }
 
         if ($Technician) {
-            $Data.request.technician = @{}
-            $Data.request.technician.email_id = $Technician
+            $Data.request.technician = @{ email_id = $Technician }
         }
 
         if ($Category) {
-            $Data.request.category = @{}
-            $Data.request.category.name = $Category
+            $Data.request.category = @{ name = $Category }
         }
 
         if ($SubCategory) {
-            $Data.request.subcategory = @{}
-            $Data.request.subcategory.name = $SubCategory
+            $Data.request.subcategory = @{ name = $SubCategory }
         }
 
         if ($SubCategoryItem) {
-            $Data.request.item = @{}
-            $Data.request.item.name = $SubCategoryItem
+            $Data.request.item = @{ name = $SubCategoryItem }
         }
 
         if ($Site) {
-            $Data.request.site = @{}
-            $Data.request.site.name = $Site
+            $Data.request.site = @{ name = $Site }
         }
 
         if ($Priority) {
-            $Data.request.priority = @{}
-            $Data.request.priority.name = $Priority
+            $Data.request.priority = @{ name = $Priority }
         }
 
         if ($Impact) {
-            $Data.request.impact = @{}
-            $Data.request.impact.name = $Impact
+            $Data.request.impact = @{ name = $Impact }
         }
 
         if ($Resolution) {
-            $Data.request.resolution = @{}
-            $Data.request.resolution.content = $Resolution
+            $Data.request.resolution = @{ content = $Resolution }
         }
     }
 
