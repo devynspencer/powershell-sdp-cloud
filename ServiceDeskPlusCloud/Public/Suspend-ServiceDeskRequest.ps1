@@ -10,9 +10,9 @@ function Suspend-ServiceDeskRequest {
         $Id,
 
         # Date and time to resume the request
-        [Parameter(Mandatory, ParameterSetName = 'ResumeScheduled')]
+        [Parameter(ParameterSetName = 'ResumeScheduled')]
         [datetime]
-        $Until,
+        $Until = (Get-Date).AddDays(3),
 
         # Request status to set when the request is suspended
         $SuspendStatus = 'Onhold',
