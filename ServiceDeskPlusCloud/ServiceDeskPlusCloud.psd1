@@ -76,6 +76,7 @@
         'Export-ServiceDeskResponse'
         'Find-ServiceDeskChange'
         'Get-ServiceDeskChange'
+        'Rename-ServiceDeskRequest' # Rename a request.
         'Suspend-ServiceDeskRequest' # Place a request on hold.
         'Resume-ServiceDeskRequest' # Remove on hold status from a request.
     )
