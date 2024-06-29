@@ -1,14 +1,20 @@
 . "$PSScriptRoot\..\Private\ConvertTo-UnixTimestamp.ps1"
 . "$PSScriptRoot\Invoke-ServiceDeskApi.ps1"
 
+# TODO: Add parameter set for setting a status when scheduling a resume time (Message unused otherwise)
+
 function Suspend-ServiceDeskRequest {
     param (
+        # Id of the request to suspend
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Int64]
         $Id,
 
+        # Date and time to resume the request
+        [datetime]
         $Until,
 
+        # Message describing why the request is suspended
         $Message
     )
 
