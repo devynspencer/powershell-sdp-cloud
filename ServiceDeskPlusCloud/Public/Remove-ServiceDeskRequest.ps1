@@ -4,15 +4,12 @@
 .SYNOPSIS
     Remove a ServiceDesk Plus request by id.
 
-.PARAMETER Portal
-    The portal for the ServiceDesk Plus Cloud instance.
-
 .PARAMETER Id
     The id of the ServiceDesk Plus request.
 
 .EXAMPLE
-    Remove-ServiceDeskRequest -Portal portalname -Id 123456
-    Add a note to request 123456 in the specified ServiceDesk Plus Cloud instance.
+    Remove-ServiceDeskRequest -Id 123456
+    Remove request with id 123456.
 #>
 
 function Remove-ServiceDeskRequest {
