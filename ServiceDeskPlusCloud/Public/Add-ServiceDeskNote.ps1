@@ -50,22 +50,35 @@ function Add-ServiceDeskNote {
     )
 
     begin {
-        # Build shared API parameters
-        $Data = @{
-            request_note = @{
-                description = $Message
-                notify_technician = $false
-                show_to_requester = $false
+        $Data = @{}
+
+        # Name of the note data object depends on resource type.
+        switch ($Resource) {
+            'requests' {
+                $Data.request_note = @{
+                    description = $Message
+                    notify_technician = $false
+                    show_to_requester = $false
+                }
+
+                # Update notification settins for the note
+                if ($Notify -contains 'Technician') {
+                    $Data.request_note.notify_technician = $true
+                }
+
+                if ($Notify -contains 'Requester') {
+                    $Data.request_note.show_to_requester = $true
+                }
             }
-        }
 
-        # Update notification settins for the note
-        if ($Notify -contains 'Technician') {
-            $Data.request_note.notify_technician = $true
-        }
+            # Other resource types use the same object for note data.
+            default {
+                $Data.note = @{
+                    description = $Message
+                }
 
-        if ($Notify -contains 'Requester') {
-            $Data.request_note.show_to_requester = $true
+                # TODO: Handle communication params
+            }
         }
     }
 
