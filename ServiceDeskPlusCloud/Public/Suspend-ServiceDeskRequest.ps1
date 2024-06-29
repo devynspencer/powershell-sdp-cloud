@@ -1,5 +1,5 @@
-. "$PSScriptRoot\..\Private\ConvertTo-UnixMillisecond.ps1"
 . "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
+. "$PSScriptRoot\..\Private\ConvertTo-UnixTimestamp.ps1"
 
 function Suspend-ServiceDeskRequest {
     param (
@@ -31,7 +31,7 @@ function Suspend-ServiceDeskRequest {
                 }
 
                 scheduled_time = @{
-                    value = ConvertTo-UnixMillisecond $Until
+                    value = ConvertTo-UnixTimestamp $Until
                 }
             }
 
