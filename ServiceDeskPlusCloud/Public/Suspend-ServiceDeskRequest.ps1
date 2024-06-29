@@ -14,6 +14,12 @@ function Suspend-ServiceDeskRequest {
         [datetime]
         $Until,
 
+        # Request status to set when the request is suspended
+        $SuspendStatus = 'Onhold',
+
+        # Status to set when the request is resumed
+        $ResumeStatus = 'Open',
+
         # Message describing why the request is suspended
         $Message
     )
@@ -22,7 +28,7 @@ function Suspend-ServiceDeskRequest {
         $Data = @{
             request = @{
                 status = @{
-                    name = 'Onhold'
+                    name = $SuspendStatus
                 }
             }
         }
@@ -30,7 +36,7 @@ function Suspend-ServiceDeskRequest {
         if ($Until) {
             $Data.request.onhold_scheduler = @{
                 change_to_status = @{
-                    name = 'Open'
+                    name = $ResumeStatus
                 }
 
                 scheduled_time = @{
