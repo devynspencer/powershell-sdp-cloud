@@ -1,11 +1,8 @@
-. "$PSScriptRoot\..\private\Format-ZohoHeader.ps1"
 . "$PSScriptRoot\..\Private\ConvertTo-UnixTimestamp.ps1"
+. "$PSScriptRoot\Invoke-ServiceDeskApi.ps1"
 
 function Suspend-ServiceDeskRequest {
     param (
-        [Parameter(Mandatory)]
-        $Portal,
-
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Int64]
         $Id,
@@ -39,22 +36,22 @@ function Suspend-ServiceDeskRequest {
                 $Data.request.onhold_scheduler.comments = $Message
             }
         }
-
-        $Body = @{
-            input_data = ($Data | ConvertTo-Json -Depth 5 -Compress)
-        }
     }
 
     process {
         foreach ($RequestId in $Id) {
-            $RestMethodParameters = @{
-                Uri = "https://sdpondemand.manageengine.com/app/$Portal/api/v3/requests/$RequestId"
-                Headers = Format-ZohoHeader
+            # Build the request parameters
+            $InvokeParams = @{
                 Method = 'Put'
-                Body = $Body
+                Operation = 'Update'
+                Id = $RequestId
+                Data = $Data
             }
 
-            $Response = (Invoke-RestMethod @RestMethodParameters).request
+            # Make the API request
+            $Response = Invoke-RestMethod @InvokeParams
+
+            $Response
         }
     }
 }
