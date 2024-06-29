@@ -63,7 +63,7 @@ function Suspend-ServiceDeskRequest {
             }
 
             # Make the API request
-            $Response = Invoke-RestMethod @InvokeParams
+            $Response = Invoke-ServiceDeskApi @InvokeParams
 
             $Response
         }
