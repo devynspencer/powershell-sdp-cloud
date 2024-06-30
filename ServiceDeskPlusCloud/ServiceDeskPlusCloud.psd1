@@ -80,6 +80,7 @@
         'Suspend-ServiceDeskRequest'   # Place a request on hold.
         'Resume-ServiceDeskRequest'    # Remove on hold status from a request.
         'Update-ServiceDeskRequest'    # Update a request.
+        'Get-ServiceDeskTask'          # Get a standalone task by id.
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
