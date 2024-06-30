@@ -20,12 +20,12 @@ function Get-ServiceDeskRequest {
     )
 
     process {
-        foreach ($RequestId in $Id) {
+        foreach ($ResourceId in $Id) {
             $InvokeParams = @{
                 Method = 'Get'
                 Operation = 'Get'
                 Resource = 'requests'
-                Id = $RequestId
+                Id = $ResourceId
             }
 
             $Response = Invoke-ServiceDeskApi @InvokeParams
