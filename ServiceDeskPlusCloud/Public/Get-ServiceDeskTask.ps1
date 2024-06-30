@@ -8,12 +8,12 @@ function Get-ServiceDeskTask {
     )
 
     process {
-        foreach ($RequestId in $Id) {
+        foreach ($ResourceId in $Id) {
             $InvokeParams = @{
                 Method = 'Get'
                 Operation = 'Get'
                 Resource = 'tasks'
-                Id = $RequestId
+                Id = $ResourceId
             }
 
             $Response = Invoke-ServiceDeskApi @InvokeParams
