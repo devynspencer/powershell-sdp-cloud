@@ -16,6 +16,7 @@ function Update-ServiceDeskTask {
 
         # The user assigned to task
         [Parameter(Mandatory)]
+        [Alias('Technician')]
         $Owner,
 
         # Scheduled start time of task
@@ -35,6 +36,7 @@ function Update-ServiceDeskTask {
         $EndTime,
 
         # Estimated effort in hours
+        [Alias('Hours')]
         $EstimatedHours,
 
         # Task completion progress, measured as a percentage
