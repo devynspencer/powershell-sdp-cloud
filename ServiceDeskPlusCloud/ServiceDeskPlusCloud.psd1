@@ -82,6 +82,7 @@
         'Update-ServiceDeskRequest'    # Update a request.
         'Get-ServiceDeskTask'          # Get a standalone task by id.
         'New-ServiceDeskTask'          # Create a new standalone task.
+        'Update-ServiceDeskTask'       # Update a standalone task.
     )
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
