@@ -20,12 +20,12 @@ function Get-ServiceDeskChange {
     )
 
     process {
-        foreach ($ChangeId in $Id) {
+        foreach ($ResourceId in $Id) {
             $RequestParams = @{
                 Method = 'Get'
                 Operation = 'Get'
                 Resource = 'changes'
-                Id = $ChangeId
+                Id = $ResourceId
                 Verbose = $true
             }
 
