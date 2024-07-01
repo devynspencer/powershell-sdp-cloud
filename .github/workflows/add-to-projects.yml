@@ -28,7 +28,7 @@ jobs:
           contains(github.event.issue.labels.*.name, 'bug') ||
           contains(github.event.issue.labels.*.name, 'enhancement') ||
           contains(github.event.issue.labels.*.name, 'function') ||
-          contains(github.event.issue.labels.*.name, 'tests') ||
+          contains(github.event.issue.labels.*.name, 'tests')
         uses: endbug/project-fields@v2
         with:
           project_url: https://github.com/users/devynspencer/projects/10 # PowerShell Modules
@@ -51,7 +51,7 @@ jobs:
           contains(github.event.issue.labels.*.name, 'workflow') ||
           contains(github.event.issue.labels.*.name, 'action') ||
           contains(github.event.issue.labels.*.name, 'webhook') ||
-          contains(github.event.issue.labels.*.name, 'template') ||
+          contains(github.event.issue.labels.*.name, 'template')
         uses: endbug/project-fields@v2
         with:
           project_url: https://github.com/users/devynspencer/projects/16 # PowerShell Modules
