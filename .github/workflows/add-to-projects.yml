@@ -14,5 +14,6 @@ jobs:
       - uses: actions/add-to-project@v1.0.2
         with:
           project-url: https://github.com/users/devynspencer/projects/10
+          github-token: ${{ secrets.CLASSIC_TOKEN }}
           labeled: documentation, bug, enhancement, function, tests
           label-operator: OR
