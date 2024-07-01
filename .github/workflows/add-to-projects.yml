@@ -5,10 +5,12 @@ on:
   issues:
     types:
       - opened
+      - reopened
+      - labeled
 
 jobs:
   add-to-project-powershell-modules:
-    name: Add issue ${{ github.event.issue.title }} to PowerShell Modules project
+    name: Add issue [${{ github.event.issue.number }}] ${{ github.event.issue.title }} to PowerShell Modules project
     runs-on: ubuntu-latest
     environment: powershell
     steps:
@@ -20,7 +22,7 @@ jobs:
           label-operator: OR
 
   add-to-project-workflow-automation:
-    name: Add issue ${{ github.event.issue.title }} to Workflow Automation project
+    name: Add issue [${{ github.event.issue.number }}] ${{ github.event.issue.title }} to Workflow Automation project
     runs-on: ubuntu-latest
     environment: powershell
     steps:
