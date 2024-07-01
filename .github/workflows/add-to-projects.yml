@@ -15,6 +15,7 @@ jobs:
     environment: powershell
     steps:
       - name: Add issue [${{ github.event.issue.number }}] to PowerShell Modules project
+        if: github.event.issue.state != 'closed'
         uses: actions/add-to-project@v1.0.2
         with:
           project-url: https://github.com/users/devynspencer/projects/10 # PowerShell Modules
@@ -24,6 +25,7 @@ jobs:
           
       - name: Set fields for project card ${{ github.event.issue.title }}
         if: |
+          github.event.issue.state != 'closed'
           contains(github.event.issue.labels.*.name, 'documentation') ||
           contains(github.event.issue.labels.*.name, 'bug') ||
           contains(github.event.issue.labels.*.name, 'enhancement') ||
@@ -38,6 +40,7 @@ jobs:
           github_token: ${{ secrets.CLASSIC_TOKEN }}
 
       - name: Add issue [${{ github.event.issue.number }}] to Workflow Automation project
+        if: github.event.issue.state != 'closed'
         uses: actions/add-to-project@v1.0.2
         with:
           project-url: https://github.com/users/devynspencer/projects/16 # Workflow Automation
@@ -47,6 +50,7 @@ jobs:
 
       - name: Set fields for project card ${{ github.event.issue.title }}
         if: |
+          github.event.issue.state != 'closed'
           contains(github.event.issue.labels.*.name, 'automation') ||
           contains(github.event.issue.labels.*.name, 'workflow') ||
           contains(github.event.issue.labels.*.name, 'action') ||
