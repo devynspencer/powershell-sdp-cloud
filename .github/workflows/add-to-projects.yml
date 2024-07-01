@@ -22,6 +22,21 @@ jobs:
           labeled: documentation, bug, enhancement, function, tests
           label-operator: OR
           
+      - name: Set fields for project card ${{ github.event.issue.title }}
+        if: |
+          contains(github.event.issue.labels.*.name, 'documentation') ||
+          contains(github.event.issue.labels.*.name, 'bug') ||
+          contains(github.event.issue.labels.*.name, 'enhancement') ||
+          contains(github.event.issue.labels.*.name, 'function') ||
+          contains(github.event.issue.labels.*.name, 'tests') ||
+        uses: endbug/project-fields@v2
+        with:
+          project_url: https://github.com/users/devynspencer/projects/10 # PowerShell Modules
+          operation: set
+          fields: Date Added,Status
+          values: ${{ github.event.issue.created_at }},Backlog
+          github_token: ${{ secrets.CLASSIC_TOKEN }}
+
       - name: Add issue [${{ github.event.issue.number }}] to Workflow Automation project
         uses: actions/add-to-project@v1.0.2
         with:
@@ -29,3 +44,18 @@ jobs:
           github-token: ${{ secrets.CLASSIC_TOKEN }}
           labeled: automation, workflow, action, webhook, template
           label-operator: OR
+
+      - name: Set fields for project card ${{ github.event.issue.title }}
+        if: |
+          contains(github.event.issue.labels.*.name, 'automation') ||
+          contains(github.event.issue.labels.*.name, 'workflow') ||
+          contains(github.event.issue.labels.*.name, 'action') ||
+          contains(github.event.issue.labels.*.name, 'webhook') ||
+          contains(github.event.issue.labels.*.name, 'template') ||
+        uses: endbug/project-fields@v2
+        with:
+          project_url: https://github.com/users/devynspencer/projects/16 # PowerShell Modules
+          operation: set
+          fields: Date Added,Status
+          values: ${{ github.event.issue.created_at }},Backlog
+          github_token: ${{ secrets.CLASSIC_TOKEN }}
