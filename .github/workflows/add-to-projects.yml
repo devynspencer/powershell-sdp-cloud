@@ -25,5 +25,5 @@ jobs:
         with:
           project-url: https://github.com/users/devynspencer/projects/16 # Workflow Automation
           github-token: ${{ secrets.CLASSIC_TOKEN }}
-          labeled: automation, workflow, action, webhook
+          labeled: automation, workflow, action, webhook, template
           label-operator: OR
