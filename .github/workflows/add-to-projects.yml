@@ -9,8 +9,8 @@ on:
       - labeled
 
 jobs:
-  add-to-project-powershell-modules:
-    name: Add issue [${{ github.event.issue.number }}] ${{ github.event.issue.title }} to PowerShell Modules project
+  add-to-project:
+    name: Add issue [${{ github.event.issue.number }}] ${{ github.event.issue.title }} to project
     runs-on: ubuntu-latest
     environment: powershell
     steps:
@@ -20,12 +20,7 @@ jobs:
           github-token: ${{ secrets.CLASSIC_TOKEN }}
           labeled: documentation, bug, enhancement, function, tests
           label-operator: OR
-
-  add-to-project-workflow-automation:
-    name: Add issue [${{ github.event.issue.number }}] ${{ github.event.issue.title }} to Workflow Automation project
-    runs-on: ubuntu-latest
-    environment: powershell
-    steps:
+          
       - uses: actions/add-to-project@v1.0.2
         with:
           project-url: https://github.com/users/devynspencer/projects/16 # Workflow Automation
