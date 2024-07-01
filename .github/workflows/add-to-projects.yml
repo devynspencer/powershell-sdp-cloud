@@ -14,14 +14,16 @@ jobs:
     runs-on: ubuntu-latest
     environment: powershell
     steps:
-      - uses: actions/add-to-project@v1.0.2
+      - name: Add issue [${{ github.event.issue.number }}] to PowerShell Modules project
+        uses: actions/add-to-project@v1.0.2
         with:
           project-url: https://github.com/users/devynspencer/projects/10 # PowerShell Modules
           github-token: ${{ secrets.CLASSIC_TOKEN }}
           labeled: documentation, bug, enhancement, function, tests
           label-operator: OR
           
-      - uses: actions/add-to-project@v1.0.2
+      - name: Add issue [${{ github.event.issue.number }}] to Workflow Automation project
+        uses: actions/add-to-project@v1.0.2
         with:
           project-url: https://github.com/users/devynspencer/projects/16 # Workflow Automation
           github-token: ${{ secrets.CLASSIC_TOKEN }}
