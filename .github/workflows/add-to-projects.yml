@@ -1,6 +1,7 @@
 name: Add issues to PowerShell Modules project
 
 on:
+  workflow_dispatch:
   issues:
     types:
       - opened
