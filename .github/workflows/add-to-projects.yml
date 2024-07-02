@@ -40,7 +40,7 @@ jobs:
         with:
           project_url: https://github.com/users/devynspencer/projects/10 # PowerShell Modules
           operation: set
-          fields: Date Added,Status
+          fields: Created At,Status
           values: ${{ github.event.issue.created_at }},Backlog
           github_token: ${{ secrets.CLASSIC_TOKEN }}
 
@@ -64,6 +64,6 @@ jobs:
         with:
           project_url: https://github.com/users/devynspencer/projects/16 # PowerShell Modules
           operation: set
-          fields: Date Added,Status
+          fields: Created At,Status
           values: ${{ github.event.issue.created_at }},Backlog
           github_token: ${{ secrets.CLASSIC_TOKEN }}
