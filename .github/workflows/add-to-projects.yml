@@ -37,7 +37,7 @@ jobs:
           
       - name: Set fields for project card ${{ github.event.issue.title }}
         if: |
-          github.event.issue.state != 'closed' ||
+          github.event.issue.state != 'closed' && (
           contains(github.event.issue.labels.*.name, 'item: chat bot') ||
           contains(github.event.issue.labels.*.name, 'item: documentation') ||
           contains(github.event.issue.labels.*.name, 'item: function') ||
@@ -50,6 +50,7 @@ jobs:
           contains(github.event.issue.labels.*.name, 'type: feature request') ||
           contains(github.event.issue.labels.*.name, 'type: question') ||
           contains(github.event.issue.labels.*.name, 'type: research')
+          )
           
         uses: endbug/project-fields@v2
         with:
@@ -74,11 +75,12 @@ jobs:
 
       - name: Set fields for project card ${{ github.event.issue.title }}
         if: |
-          github.event.issue.state != 'closed' ||
+          github.event.issue.state != 'closed' && (
           contains(github.event.issue.labels.*.name, 'item: webhook') ||
           contains(github.event.issue.labels.*.name, 'item: custom action') ||
           contains(github.event.issue.labels.*.name, 'item: workflow') ||
           contains(github.event.issue.labels.*.name, 'item: template')
+          )
         uses: endbug/project-fields@v2
         with:
           project_url: https://github.com/users/devynspencer/projects/16 # PowerShell Modules
