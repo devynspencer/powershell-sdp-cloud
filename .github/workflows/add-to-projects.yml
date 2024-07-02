@@ -26,11 +26,16 @@ jobs:
       - name: Set fields for project card ${{ github.event.issue.title }}
         if: |
           github.event.issue.state != 'closed'
-          contains(github.event.issue.labels.*.name, 'documentation') ||
-          contains(github.event.issue.labels.*.name, 'bug') ||
-          contains(github.event.issue.labels.*.name, 'enhancement') ||
-          contains(github.event.issue.labels.*.name, 'function') ||
-          contains(github.event.issue.labels.*.name, 'tests')
+          contains(github.event.issue.labels.*.name, 'item: chat bot') ||
+          contains(github.event.issue.labels.*.name, 'item: documentation') ||
+          contains(github.event.issue.labels.*.name, 'item: function') ||
+          contains(github.event.issue.labels.*.name, 'item: module') ||
+          contains(github.event.issue.labels.*.name, 'item: script') ||
+          contains(github.event.issue.labels.*.name, 'item: unit test') ||
+          contains(github.event.issue.labels.*.name, 'item: integration test') ||
+          contains(github.event.issue.labels.*.name, 'type: bug') ||
+          contains(github.event.issue.labels.*.name, 'type: enhancement') ||
+          contains(github.event.issue.labels.*.name, 'type: feature request')
         uses: endbug/project-fields@v2
         with:
           project_url: https://github.com/users/devynspencer/projects/10 # PowerShell Modules
@@ -51,11 +56,10 @@ jobs:
       - name: Set fields for project card ${{ github.event.issue.title }}
         if: |
           github.event.issue.state != 'closed'
-          contains(github.event.issue.labels.*.name, 'automation') ||
-          contains(github.event.issue.labels.*.name, 'workflow') ||
-          contains(github.event.issue.labels.*.name, 'action') ||
-          contains(github.event.issue.labels.*.name, 'webhook') ||
-          contains(github.event.issue.labels.*.name, 'template')
+          contains(github.event.issue.labels.*.name, 'item: webhook') ||
+          contains(github.event.issue.labels.*.name, 'item: custom action') ||
+          contains(github.event.issue.labels.*.name, 'item: workflow') ||
+          contains(github.event.issue.labels.*.name, 'item: template')
         uses: endbug/project-fields@v2
         with:
           project_url: https://github.com/users/devynspencer/projects/16 # PowerShell Modules
