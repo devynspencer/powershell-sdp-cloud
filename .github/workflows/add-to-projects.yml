@@ -20,7 +20,19 @@ jobs:
         with:
           project-url: https://github.com/users/devynspencer/projects/10 # PowerShell Modules
           github-token: ${{ secrets.CLASSIC_TOKEN }}
-          labeled: documentation, bug, enhancement, function, tests
+          labeled: >
+            item: chat bot,
+            item: documentation,
+            item: function,
+            item: module,
+            item: script,
+            item: unit test,
+            item: integration test,
+            type: bug,
+            type: enhancement,
+            type: feature request,
+            type: question,
+            type: research
           label-operator: OR
           
       - name: Set fields for project card ${{ github.event.issue.title }}
@@ -35,7 +47,10 @@ jobs:
           contains(github.event.issue.labels.*.name, 'item: integration test') ||
           contains(github.event.issue.labels.*.name, 'type: bug') ||
           contains(github.event.issue.labels.*.name, 'type: enhancement') ||
-          contains(github.event.issue.labels.*.name, 'type: feature request')
+          contains(github.event.issue.labels.*.name, 'type: feature request') ||
+          contains(github.event.issue.labels.*.name, 'type: question') ||
+          contains(github.event.issue.labels.*.name, 'type: research')
+          
         uses: endbug/project-fields@v2
         with:
           project_url: https://github.com/users/devynspencer/projects/10 # PowerShell Modules
@@ -50,7 +65,11 @@ jobs:
         with:
           project-url: https://github.com/users/devynspencer/projects/16 # Workflow Automation
           github-token: ${{ secrets.CLASSIC_TOKEN }}
-          labeled: automation, workflow, action, webhook, template
+          labeled: >
+            item: webhook,
+            item: custom action,
+            item: workflow,
+            item: template
           label-operator: OR
 
       - name: Set fields for project card ${{ github.event.issue.title }}
