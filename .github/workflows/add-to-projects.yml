@@ -1,4 +1,4 @@
-name: Add issues to PowerShell Modules project
+name: Add issue to project
 
 on:
   workflow_dispatch:
@@ -10,15 +10,14 @@ on:
 
 jobs:
   add-to-project:
-    name: Add issue [${{ github.event.issue.number }}] ${{ github.event.issue.title }} to project
+    name: Add issue [${{ github.event.issue.number }}] to project
     runs-on: ubuntu-latest
-    environment: powershell
     steps:
-      - name: Add issue [${{ github.event.issue.number }}] to PowerShell Modules project
+      - name: Add issue to project [PowerShell Modules]
         if: github.event.issue.state != 'closed'
         uses: actions/add-to-project@v1.0.2
         with:
-          project-url: https://github.com/users/devynspencer/projects/10 # PowerShell Modules
+          project-url: ${{ vars.MODULES_PROJECT_URL }}
           github-token: ${{ secrets.CLASSIC_TOKEN }}
           labeled: >
             item: chat bot,
@@ -34,8 +33,8 @@ jobs:
             type: question,
             type: research
           label-operator: OR
-          
-      - name: Set fields for project card ${{ github.event.issue.title }}
+
+      - name: Set card fields for project [PowerShell Modules]
         if: |
           github.event.issue.state != 'closed' && (
           contains(github.event.issue.labels.*.name, 'item: chat bot') ||
@@ -51,20 +50,19 @@ jobs:
           contains(github.event.issue.labels.*.name, 'type: question') ||
           contains(github.event.issue.labels.*.name, 'type: research')
           )
-          
         uses: endbug/project-fields@v2
         with:
-          project_url: https://github.com/users/devynspencer/projects/10 # PowerShell Modules
+          project_url: ${{ vars.MODULES_PROJECT_URL }}
           operation: set
           fields: Created At,Status
           values: ${{ github.event.issue.created_at }},Backlog
           github_token: ${{ secrets.CLASSIC_TOKEN }}
 
-      - name: Add issue [${{ github.event.issue.number }}] to Workflow Automation project
+      - name: Add issue to project [Workflow Automation]
         if: github.event.issue.state != 'closed'
         uses: actions/add-to-project@v1.0.2
         with:
-          project-url: https://github.com/users/devynspencer/projects/16 # Workflow Automation
+          project-url: ${{ vars.AUTOMATION_PROJECT_URL }} # Workflow Automation
           github-token: ${{ secrets.CLASSIC_TOKEN }}
           labeled: >
             item: webhook,
@@ -73,7 +71,7 @@ jobs:
             item: template
           label-operator: OR
 
-      - name: Set fields for project card ${{ github.event.issue.title }}
+      - name: Set card fields for project [Workflow Automation]
         if: |
           github.event.issue.state != 'closed' && (
           contains(github.event.issue.labels.*.name, 'item: webhook') ||
@@ -83,7 +81,7 @@ jobs:
           )
         uses: endbug/project-fields@v2
         with:
-          project_url: https://github.com/users/devynspencer/projects/16 # PowerShell Modules
+          project_url: ${{ vars.AUTOMATION_PROJECT_URL }} # PowerShell Modules
           operation: set
           fields: Created At,Status
           values: ${{ github.event.issue.created_at }},Backlog
