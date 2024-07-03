@@ -1,0 +1,85 @@
+name: Bug Report 🐛
+description: File a bug report.
+title: "[Bug]: "
+labels: ["bug"]
+assignees: ["devynspencer"]
+
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to fill out this bug report!
+
+  - type: dropdown
+    id: powershell-version
+    attributes:
+      label: PowerShell version
+      description: |
+        What version(s) of PowerShell are you using when the bug is encountered?
+        Enter `$PSVersionTable | select PSEdition, PSVersion` in your console if unsure.
+      options:
+        - PowerShell 7.4
+        - PowerShell 7.2
+        - PowerShell 7.1
+        - PowerShell 7.0
+        - PowerShell Core 6.2
+        - PowerShell Core 6.1
+        - PowerShell Core 6.0
+        - Windows PowerShell 5.1
+        - Windows PowerShell 5.0
+        - Windows PowerShell 4.0
+        - Windows PowerShell 3.0
+        - Windows PowerShell 2.0
+        - Windows PowerShell 1.0
+      multiple: true
+      default: 0 # Select latest
+    validations:
+      required: true
+
+  - type: textarea
+    id: behavior-expected
+    attributes:
+      label: Expected behavior
+      description: What were you expecting to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: behavior-actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened? Provide a detailed description of what happened, with as much context as possible.
+      placeholder: Tell us what you see!
+      value: "A bug happened!"
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-replicate
+    attributes:
+      label: Steps to replicate
+      description: Include the exact steps to reproduce the issue.
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code, so no need for backticks.
+      render: shell
+
+  - type: textarea
+    id: comments
+    attributes:
+      label: Comments
+      description: Include any additional information or commentary.
+
+  - type: checkboxes
+    id: terms-code-of-conduct
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com).
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

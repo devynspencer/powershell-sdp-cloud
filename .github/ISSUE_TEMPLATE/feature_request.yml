@@ -1,0 +1,67 @@
+name: Feature Request 💡
+description: Suggest a feature, enhancement, or an idea for this project.
+title: "[Feature]: "
+labels: ["enhancement"]
+assignees: ["devynspencer"]
+
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for taking the time to make this suggestion!
+
+  - type: textarea
+    id: solution-description
+    attributes:
+      label: Describe the solution
+      description: Provide a clear and concise summary of what you want to happen.
+      placeholder: Add support for xyz when abc is enabled.
+    validations:
+      required: true
+
+  - type: textarea
+    id: related-problem
+    attributes:
+      label: Related issues
+      description: >
+        Is your feature request related to a problem?
+        Please describe, and provide links to any related issues.
+      placeholder: I'm always frustrated when [...]
+
+  - type: textarea
+    id: example-usage
+    attributes:
+      label: "Example usage"
+      description: >
+        Provide examples of how the feature would be used.
+        This is automatically formatted as PowerShell code,
+        so no need for backticks."
+      placeholder: |
+        # Basic use case
+        Get-Something -WithThis "value" -AndThat "value"
+
+        # Advanced use case
+        Get-Something -WithThis "value" -AndThat "value" -DoSomething
+
+        # Add any additional information here.
+      render: powershell
+
+  - type: textarea
+    id: solution-alternatives
+    attributes:
+      label: Alternative solutions
+      description: List any alternative solutions or features you've considered.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Include any additional information, diagrams, or screenshots here.
+
+  - type: checkboxes
+    id: terms-code-of-conduct
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://example.com).
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
